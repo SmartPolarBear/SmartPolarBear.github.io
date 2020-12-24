@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OS on XKZZZZZZ&#39;s Lab</title>
+    <link>https://xkzzzzzz.xyz/tags/os/</link>
+    <description>Recent content in OS on XKZZZZZZ&#39;s Lab</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 11 Oct 2020 16:25:35 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/tags/os/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Project Dionysus - Why and What</title>
+      <link>https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/</link>
+      <pubDate>Sun, 11 Oct 2020 16:25:35 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/</guid>
+      <description>Prologue  Dating back to a year ago, when I was attempting to add various features to the original rexv6-2 project, I am trapped by some very tough issues. I had been ambitious about the plan, but many of them turn out to be too hard to be carried out, and some of the original code of xv6, frankly speaking, is somehow out of date. That&amp;rsquo;s when it flashed on me that it may be better to build a new one from scratch.</description>
+    </item>
+    
+  </channel>
+</rss>

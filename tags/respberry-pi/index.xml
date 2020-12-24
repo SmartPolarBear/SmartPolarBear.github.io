@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Respberry Pi on XKZZZZZZ&#39;s Lab</title>
+    <link>https://xkzzzzzz.xyz/tags/respberry-pi/</link>
+    <description>Recent content in Respberry Pi on XKZZZZZZ&#39;s Lab</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 23 Feb 2019 19:40:08 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/tags/respberry-pi/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Respberry Pi 3B&#43; Headless Setup</title>
+      <link>https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/</link>
+      <pubDate>Sat, 23 Feb 2019 19:40:08 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/</guid>
+      <description>Hands-On This morning I finally received my Raspberry Pi, after an eight-day-long delivery. Raspberry Pi 3B+, released in 2018, as is said, is more powerful than its predecessor. The first step after opening the box is to add two head sinks on the chip. The CPU doesn&amp;rsquo;t need one although its performance has been greatly improved, for it already has one. The given box has no reserved space for GPIO pins, which make it impossible to use it with GPIO peripherals.</description>
+    </item>
+    
+  </channel>
+</rss>

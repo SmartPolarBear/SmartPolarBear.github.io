@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='A new beginning'><title>Project Dionysus - Why and What</title>
+
+<link rel='canonical' href='https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Project Dionysus - Why and What'>
+<meta property='og:description' content='A new beginning'>
+<meta property='og:url' content='https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/'>
+<meta property='og:site_name' content='XKZZZZZZ&#39;s Lab'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='OS' /><meta property='article:published_time' content='2020-10-11T16:25:35&#43;08:00'/><meta property='article:modified_time' content='2020-10-11T16:25:35&#43;08:00'/><meta property='og:image' content='https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/bootup.png' />
+<meta name="twitter:title" content="Project Dionysus - Why and What">
+<meta name="twitter:description" content="A new beginning"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/bootup.png' />
+    </head>
+    <body class="article-page keep-sidebar">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended ">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hub8e0e01de07ab5d0590684d8270298a2_124947_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">😆</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://xkzzzzzz.xyz/">XKZZZZZZ&#39;s Lab</a></h1>
+        <h2 class="site-description">E pluribus Unum.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/posts/project-dionysus-why-and-what/">
+                <img src="/posts/project-dionysus-why-and-what/bootup_hudfc1528e6f2f7b0f1fb3414667faae3a_28487_800x0_resize_box_2.png"
+                        srcset="/posts/project-dionysus-why-and-what/bootup_hudfc1528e6f2f7b0f1fb3414667faae3a_28487_800x0_resize_box_2.png 800w, /posts/project-dionysus-why-and-what/bootup_hudfc1528e6f2f7b0f1fb3414667faae3a_28487_1600x0_resize_box_2.png 1600w"
+                        width="800" 
+                        height="514" 
+                        loading="lazy"
+                        alt="Featured image of post Project Dionysus - Why and What" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/blog/" >
+                Blog
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/posts/project-dionysus-why-and-what/">Project Dionysus - Why and What</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        A new beginning
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Oct 11, 2020</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <h2 id="prologue">Prologue</h2>
+<p>    Dating back to a year ago, when I was attempting to add various features to the original rexv6-2 project, I am trapped by some very tough issues. I had been ambitious about the plan, but many of them turn out to be too hard to be carried out, and some of the original code of xv6, frankly speaking, is somehow out of date. That&rsquo;s when it flashed on me that it may be better to build a new one from scratch. At that time, I meet the series of papers about minix3 and the concept of microkernel, and exokernel, described by a paper from MIT. They were really appealed to me. In the following months, it gradually become the main work for me, and soon turned to be the longest-lasting personal project of mine.</p>
+<h2 id="why-operation-system-kernel">Why Operation System Kernel?</h2>
+<p>    As science and technologies advancing, all the devices are becoming powerful, bringing the concept of &ldquo;Install and remove apps&rdquo; everywhere, following the increasingly urgent need of reliable operation system kernels equipped with modern concepts and consensus. Among all the needs, security and reliability should be the top.  Intricate problem involved, it is impossible to keep the old routines. The new kernels recently appear in the industry, Google&rsquo;s zircon for example, regard the concepts of microkernel, strictly isolated processes, and the well-encapsulated resource management as the key to success in the future. As the new consensus of the industry, these concepts must be invaluable for me, a freshman planning to major computer science, to acquire proficiency in. That&rsquo;s the ultimate aim of project Dionysus.</p>
+<h2 id="whats-the-principles-of-development">What&rsquo;s the Principles of Development</h2>
+<ul>
+<li>
+<p>Care about kernel itself first.<br>
+    Having learned from previous attempts and failures, In this project, grub2 is used to boot the kernel, to block away the details and tricks that are too legacy. And user applications, shells, and GUI are <strong>not</strong> priorities.</p>
+</li>
+<li>
+<p>Application of data structures and algorithms<br>
+    Being more familiar with data structures and algorithms with deeper understanding, It&rsquo;s high time I should use it in a project and observe their pros and cons  in production.</p>
+</li>
+<li>
+<p>Understand every details, and choose the best<br>
+    I regard this as a serious project to learn. So I shall figure out all every detail including how popular operation system do and why they do like that and choose the best means among them so as to deepen my understanding about operation system.</p>
+</li>
+</ul>
+<h2 id="whats-going-on-now">What&rsquo;s Going on Now?</h2>
+<p>    Despite the ultimate aim, the more advanced a concept is, the harder it is for an individual to implement. So now the job is to first build a usable kernel on the mature techniques and concepts that popular operation system kernels mostly rely on. By now, the following modules had been covered partly or completely:</p>
+<ul>
+<li>Memory management</li>
+<li>Drivers</li>
+<li>Process management</li>
+<li>Power management</li>
+<li>File system</li>
+<li>Facilities for user apps</li>
+<li>Framework and libraries that all the above involved</li>
+</ul>
+<p>    And they are now temporarily built into a macro kernel but are neatly divided and isolated from each other, making it possible for future changes.<br>
+<figure style="flex-grow: 155; flex-basis: 373px">
+		<a href="/posts/project-dionysus-why-and-what/bootup.png" data-size="722x464"><img src="/posts/project-dionysus-why-and-what/bootup.png"
+				srcset="/posts/project-dionysus-why-and-what/bootup_hudfc1528e6f2f7b0f1fb3414667faae3a_28487_480x0_resize_box_2.png 480w, /posts/project-dionysus-why-and-what/bootup_hudfc1528e6f2f7b0f1fb3414667faae3a_28487_1024x0_resize_box_2.png 1024w"
+				width="722"
+				height="464"
+				loading="lazy"
+				alt="Dionysus kernel, after finishing booting and initializations">
+		</a>
+		
+		<figcaption>Dionysus kernel, after finishing booting and initializations</figcaption>
+		
+	</figure><br>
+    Because of the complexity of file system and the design of interfaces, the development has been slow recently . A rough schedule is to finishe file system by the end of 2020, and finished other kernel modules by mid-2021.</p>
+<h2 id="whats-the-plan-for-the-future">What&rsquo;s the Plan for the Future?</h2>
+<p><figure style="flex-grow: 203; flex-basis: 487px">
+		<a href="/posts/project-dionysus-why-and-what/diag.png" data-size="1110x546"><img src="/posts/project-dionysus-why-and-what/diag.png"
+				srcset="/posts/project-dionysus-why-and-what/diag_hu3fef3a514eeba98b5de1bdd09b4b29e4_29200_480x0_resize_box_2.png 480w, /posts/project-dionysus-why-and-what/diag_hu3fef3a514eeba98b5de1bdd09b4b29e4_29200_1024x0_resize_box_2.png 1024w"
+				width="1110"
+				height="546"
+				loading="lazy"
+				alt="Dionysus kernel, future architecture simple diagram">
+		</a>
+		
+		<figcaption>Dionysus kernel, future architecture simple diagram</figcaption>
+		
+	</figure><br>
+    To achieve the goal, after all the features are tested to work well, the first step is to implement a object manager to provide uniform interface and security guard for all the resource, making all the resources appears to be handles. and then the modules will be moved to separate processes running under kernel privileges.<br>
+    The reason why system servers still run under kernel privileges is to simplify the development work. And two separate sets of API provided will make it easy to port existent Linux apps like LLVM  C/C++ standard libraries and compiler kits.<br>
+    As another goal for me, a hand-made simple compiler may be implemented and used in the accomplished project, but so far there&rsquo;s no plan to build a kernel with custom compilers.</p>
+<h2 id="epilogue">Epilogue</h2>
+<p>    I remember that I have had the idea to implement a kernel very early after I learn how to code. The urge become so strong that I make the first attempt when I graduate from junior high school, when I even find it difficult to understand the difference between physical memory and virtual memory. Then I made a few attempts afterwards, slowly becoming aware of the key points of kernel and how to build a kernel. During times of try and fail, I gradually know how to work with Linux distributions and start to  fall under the spell of the philosophy of UNIX. And then I learned more, and finally became determined to write my own. I am serious, and I will try my best this time to build a usable one with everything I&rsquo;d ever imagined on it.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/os/">OS</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+     
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="SmartPolarBear/SmartPolarBear.github.io"
+        issue-term="pathname"
+        theme="preferred-color-scheme" 
+        
+        label="comment"
+        
+        crossorigin="anonymous" 
+        async>
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2020 XKZZZZZZ&#39;s Lab
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.0.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+
+            </main>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"
+    integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin="anonymous"></script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

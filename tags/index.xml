@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on XKZZZZZZ&#39;s Lab</title>
+    <link>https://xkzzzzzz.xyz/tags/</link>
+    <description>Recent content in Tags on XKZZZZZZ&#39;s Lab</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 11 Oct 2020 16:25:35 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OS</title>
+      <link>https://xkzzzzzz.xyz/tags/os/</link>
+      <pubDate>Sun, 11 Oct 2020 16:25:35 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/tags/os/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>XV6</title>
+      <link>https://xkzzzzzz.xyz/tags/xv6/</link>
+      <pubDate>Thu, 30 May 2019 23:11:01 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/tags/xv6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Headless Setup</title>
+      <link>https://xkzzzzzz.xyz/tags/headless-setup/</link>
+      <pubDate>Sat, 23 Feb 2019 19:40:08 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/tags/headless-setup/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Respberry Pi</title>
+      <link>https://xkzzzzzz.xyz/tags/respberry-pi/</link>
+      <pubDate>Sat, 23 Feb 2019 19:40:08 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/tags/respberry-pi/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

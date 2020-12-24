@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on XKZZZZZZ&#39;s Lab</title>
+    <link>https://xkzzzzzz.xyz/posts/</link>
+    <description>Recent content in Posts on XKZZZZZZ&#39;s Lab</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 11 Oct 2020 16:25:35 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Project Dionysus - Why and What</title>
+      <link>https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/</link>
+      <pubDate>Sun, 11 Oct 2020 16:25:35 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/</guid>
+      <description>Prologue  Dating back to a year ago, when I was attempting to add various features to the original rexv6-2 project, I am trapped by some very tough issues. I had been ambitious about the plan, but many of them turn out to be too hard to be carried out, and some of the original code of xv6, frankly speaking, is somehow out of date. That&amp;rsquo;s when it flashed on me that it may be better to build a new one from scratch.</description>
+    </item>
+    
+    <item>
+      <title>Announcing the Re-xv6-2 project</title>
+      <link>https://xkzzzzzz.xyz/posts/announcing-rexv6-proj/</link>
+      <pubDate>Thu, 30 May 2019 23:11:01 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/posts/announcing-rexv6-proj/</guid>
+      <description>Introduction Being considered as the three romances of a programmer, An OS is both challenging and interesting project to dive in. As a mature codebase of operation system study, xv6 is a good re-implementation of Unix v6, which is used by MIT&amp;rsquo;s 6.828. This project aims at apply improvements on the a quasi-original codebase of xv6 (xv6-improved) , adding including new kernel features and user support so as to create a linux-like full-featured kernel, including some modern techniques, such as MLFQ scheduling and an extended file system.</description>
+    </item>
+    
+    <item>
+      <title>Respberry Pi 3B&#43; Headless Setup</title>
+      <link>https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/</link>
+      <pubDate>Sat, 23 Feb 2019 19:40:08 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/</guid>
+      <description>Hands-On This morning I finally received my Raspberry Pi, after an eight-day-long delivery. Raspberry Pi 3B+, released in 2018, as is said, is more powerful than its predecessor. The first step after opening the box is to add two head sinks on the chip. The CPU doesn&amp;rsquo;t need one although its performance has been greatly improved, for it already has one. The given box has no reserved space for GPIO pins, which make it impossible to use it with GPIO peripherals.</description>
+    </item>
+    
+  </channel>
+</rss>

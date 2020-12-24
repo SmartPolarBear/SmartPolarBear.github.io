@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Setup your Respberry Pi without a monitor'><title>Respberry Pi 3B&#43; Headless Setup</title>
+
+<link rel='canonical' href='https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Respberry Pi 3B&#43; Headless Setup'>
+<meta property='og:description' content='Setup your Respberry Pi without a monitor'>
+<meta property='og:url' content='https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/'>
+<meta property='og:site_name' content='XKZZZZZZ&#39;s Lab'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Respberry Pi' /><meta property='article:tag' content='Headless Setup' /><meta property='article:published_time' content='2019-02-23T19:40:08&#43;08:00'/><meta property='article:modified_time' content='2019-02-23T19:40:08&#43;08:00'/><meta property='og:image' content='https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/Pi1.png' />
+<meta name="twitter:title" content="Respberry Pi 3B&#43; Headless Setup">
+<meta name="twitter:description" content="Setup your Respberry Pi without a monitor"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/Pi1.png' />
+    </head>
+    <body class="article-page keep-sidebar">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended ">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hub8e0e01de07ab5d0590684d8270298a2_124947_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">😆</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://xkzzzzzz.xyz/">XKZZZZZZ&#39;s Lab</a></h1>
+        <h2 class="site-description">E pluribus Unum.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/posts/resp-pi-headless-setup/">
+                <img src="/posts/resp-pi-headless-setup/Pi1_hu2bd505227de8178f30754dbe5751e8b4_584110_800x0_resize_box_2.png"
+                        srcset="/posts/resp-pi-headless-setup/Pi1_hu2bd505227de8178f30754dbe5751e8b4_584110_800x0_resize_box_2.png 800w, /posts/resp-pi-headless-setup/Pi1_hu2bd505227de8178f30754dbe5751e8b4_584110_1600x0_resize_box_2.png 1600w"
+                        width="800" 
+                        height="800" 
+                        loading="lazy"
+                        alt="Featured image of post Respberry Pi 3B&#43; Headless Setup" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/archived/" >
+                Archived
+            </a>
+        
+            <a href="/categories/blog/" >
+                Blog
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/posts/resp-pi-headless-setup/">Respberry Pi 3B&#43; Headless Setup</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        Setup your Respberry Pi without a monitor
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Feb 23, 2019</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <h3 id="hands-on">Hands-On</h3>
+<p>This morning I finally received my Raspberry Pi, after an eight-day-long delivery. Raspberry Pi 3B+, released in 2018, as is said, is more powerful than its predecessor. The first step after opening the box is to add two head sinks on the chip. The CPU doesn&rsquo;t need one although its performance has been greatly improved, for it already has one. The given box has no reserved space for GPIO pins, which make it impossible to use it with GPIO peripherals. Therefore, my trick is that I installed a half of the box opposite down like what&rsquo;s shown below.</p>
+<p><figure style="flex-grow: 100; flex-basis: 240px">
+		<a href="/posts/resp-pi-headless-setup/Pi1.png" data-size="1598x1598"><img src="/posts/resp-pi-headless-setup/Pi1.png"
+				srcset="/posts/resp-pi-headless-setup/Pi1_hu2bd505227de8178f30754dbe5751e8b4_584110_480x0_resize_box_2.png 480w, /posts/resp-pi-headless-setup/Pi1_hu2bd505227de8178f30754dbe5751e8b4_584110_1024x0_resize_box_2.png 1024w"
+				width="1598"
+				height="1598"
+				loading="lazy"
+				alt="Raspberry 3B&#43;">
+		</a>
+		
+		<figcaption>Raspberry 3B+</figcaption>
+		
+	</figure></p>
+<h3 id="setup">Setup</h3>
+<p>I planed to run Windows 10 IoT at first, but finally I decided to use Raspbian as the support for 3B+ has not been officially released. The preview version is buggy and what&rsquo;s worse, it can&rsquo;t support the on-board Wi-Fi.</p>
+<p>As for setup, convenient as it is generally, there&rsquo;s a big obstacle that I don&rsquo;t have either a network cable or a set of keyboard and mouse. Moreover, my main PC runs Windows, which make the process more complicated.</p>
+<p>For a headless setup, we need two computers if your main computer runs Windows. As we often do for Pi on Windows, I format the micro SD card and write the Raspbian image with SD Card Formatter from Tuxera Inc. and Rufus. Then, the step is a bit different than common. After mounting the card on a <strong>Linux computer</strong>, edit the file located in <code>/etc/wpa_supplicant/wpa_supplicant.conf</code> . For example, we use nano.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+</code></pre></div><p>And append a network section like below:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">ctrl_interface</span><span class="o">=</span><span class="nv">DIR</span><span class="o">=</span>/var/run/wpa_supplicant <span class="nv">GROUP</span><span class="o">=</span>netdev
+<span class="nv">update_config</span><span class="o">=</span><span class="m">1</span>
+
+<span class="nv">network</span><span class="o">={</span>
+        <span class="nv">ssid</span><span class="o">=</span><span class="s2">&#34;Your wifi&#39;s SSID&#34;</span>
+        <span class="nv">psk</span><span class="o">=</span><span class="s2">&#34;Password&#34;</span>
+        <span class="nv">key_mgmt</span><span class="o">=</span>WPA-PSK
+<span class="o">}</span>
+</code></pre></div><p>If you are living in China, don&rsquo;t forget a <code>country=CN</code> before the network section.
+Then insert the card, whose slot should be in <strong>the other end</strong> of USBs on the board, and power on the Pi. When the red light is on and the green light is off, you can notice a new device in your router&rsquo;s management page, which is often <code>192.168.1.1</code> or <code>192.168.3.1</code>. My Pi shows as a <strong>dhcpcd-6.11.5-armv7l</strong> in the router&rsquo;s management page with the IP shown in the screenshot.</p>
+<p><figure style="flex-grow: 662; flex-basis: 1591px">
+		<a href="/posts/resp-pi-headless-setup/IP1.jpg" data-size="1200x181"><img src="/posts/resp-pi-headless-setup/IP1.jpg"
+				srcset="/posts/resp-pi-headless-setup/IP1_hu4a1dd2f37eeab413a48547703d464de3_25080_480x0_resize_q75_box.jpg 480w, /posts/resp-pi-headless-setup/IP1_hu4a1dd2f37eeab413a48547703d464de3_25080_1024x0_resize_q75_box.jpg 1024w"
+				width="1200"
+				height="181"
+				loading="lazy"
+				alt="Raspberry 3B&#43;&rsquo;s IP">
+		</a>
+		
+		<figcaption>Raspberry 3B+’s IP</figcaption>
+		
+	</figure></p>
+<p>With the IP address shown, we can easily connect to the Pi by any ssh tools. For example, putty.</p>
+<p><figure style="flex-grow: 107; flex-basis: 257px">
+		<a href="/posts/resp-pi-headless-setup/putty1.png" data-size="615x574"><img src="/posts/resp-pi-headless-setup/putty1.png"
+				srcset="/posts/resp-pi-headless-setup/putty1_huc714cd7562ae50425f8e9678279cb743_84738_480x0_resize_box_2.png 480w, /posts/resp-pi-headless-setup/putty1_huc714cd7562ae50425f8e9678279cb743_84738_1024x0_resize_box_2.png 1024w"
+				width="615"
+				height="574"
+				loading="lazy"
+				alt="Putty">
+		</a>
+		
+		<figcaption>Putty</figcaption>
+		
+	</figure></p>
+<h3 id="login-and-have-fun">Login and Have Fun</h3>
+<p>As a Raspberry Pi denies a remote connection to the <code>root</code> user, we should login with <code>pi</code> user and the default password is <code>raspberry</code>. The connection should be established well now and you can do anything with this tiny Linux device. Have fun!</p>
+<h3 id="whats-next">What&rsquo;s Next</h3>
+<p>In the next passage I am going to control a LED matrix with GPIO pins. I will write a program in C++ or Python3 to control the MAX7219 module.</p>
+<h3 id="reference">Reference</h3>
+<ol>
+<li><a class="link" href="https://raspberrypi.stackexchange.com/questions/14611/how-to-set-up-raspberry-pi-without-a-monitor"  target="_blank" rel="noopener"
+    >How to set up Raspberry Pi without a monitor?</a></li>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/20794478"  target="_blank" rel="noopener"
+    >树莓派 Raspberry Pi 3 无显示器安装</a></li>
+<li><a class="link" href="https://docs.microsoft.com/en-us/windows/iot-core/troubleshooting"  target="_blank" rel="noopener"
+    >Troubleshooting, Raspberry Pi 3B+ booting issues
+</a></li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/respberry-pi/">Respberry Pi</a>
+        
+            <a href="/tags/headless-setup/">Headless Setup</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+     
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="SmartPolarBear/SmartPolarBear.github.io"
+        issue-term="pathname"
+        theme="preferred-color-scheme" 
+        
+        label="comment"
+        
+        crossorigin="anonymous" 
+        async>
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2020 XKZZZZZZ&#39;s Lab
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.0.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+
+            </main>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"
+    integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin="anonymous"></script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

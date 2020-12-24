@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>XKZZZZZZ&#39;s Lab</title>
+        <link>https://xkzzzzzz.xyz/</link>
+        <description>Recent content on XKZZZZZZ&#39;s Lab</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Sun, 11 Oct 2020 16:38:04 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Project Dionysus - Why and What</title>
+        <link>https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/</link>
+        <pubDate>Sun, 11 Oct 2020 16:25:35 +0800</pubDate>
+        
+        <guid>https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/</guid>
+        <description>&lt;img src="https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/bootup.png" alt="Featured image of post Project Dionysus - Why and What" /&gt;&lt;h2 id=&#34;prologue&#34;&gt;Prologue&lt;/h2&gt;
+&lt;p&gt;    Dating back to a year ago, when I was attempting to add various features to the original rexv6-2 project, I am trapped by some very tough issues. I had been ambitious about the plan, but many of them turn out to be too hard to be carried out, and some of the original code of xv6, frankly speaking, is somehow out of date. That&amp;rsquo;s when it flashed on me that it may be better to build a new one from scratch. At that time, I meet the series of papers about minix3 and the concept of microkernel, and exokernel, described by a paper from MIT. They were really appealed to me. In the following months, it gradually become the main work for me, and soon turned to be the longest-lasting personal project of mine.&lt;/p&gt;
+&lt;h2 id=&#34;why-operation-system-kernel&#34;&gt;Why Operation System Kernel?&lt;/h2&gt;
+&lt;p&gt;    As science and technologies advancing, all the devices are becoming powerful, bringing the concept of &amp;ldquo;Install and remove apps&amp;rdquo; everywhere, following the increasingly urgent need of reliable operation system kernels equipped with modern concepts and consensus. Among all the needs, security and reliability should be the top.  Intricate problem involved, it is impossible to keep the old routines. The new kernels recently appear in the industry, Google&amp;rsquo;s zircon for example, regard the concepts of microkernel, strictly isolated processes, and the well-encapsulated resource management as the key to success in the future. As the new consensus of the industry, these concepts must be invaluable for me, a freshman planning to major computer science, to acquire proficiency in. That&amp;rsquo;s the ultimate aim of project Dionysus.&lt;/p&gt;
+&lt;h2 id=&#34;whats-the-principles-of-development&#34;&gt;What&amp;rsquo;s the Principles of Development&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Care about kernel itself first.&lt;br&gt;
+    Having learned from previous attempts and failures, In this project, grub2 is used to boot the kernel, to block away the details and tricks that are too legacy. And user applications, shells, and GUI are &lt;strong&gt;not&lt;/strong&gt; priorities.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Application of data structures and algorithms&lt;br&gt;
+    Being more familiar with data structures and algorithms with deeper understanding, It&amp;rsquo;s high time I should use it in a project and observe their pros and cons  in production.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Understand every details, and choose the best&lt;br&gt;
+    I regard this as a serious project to learn. So I shall figure out all every detail including how popular operation system do and why they do like that and choose the best means among them so as to deepen my understanding about operation system.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;whats-going-on-now&#34;&gt;What&amp;rsquo;s Going on Now?&lt;/h2&gt;
+&lt;p&gt;    Despite the ultimate aim, the more advanced a concept is, the harder it is for an individual to implement. So now the job is to first build a usable kernel on the mature techniques and concepts that popular operation system kernels mostly rely on. By now, the following modules had been covered partly or completely:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Memory management&lt;/li&gt;
+&lt;li&gt;Drivers&lt;/li&gt;
+&lt;li&gt;Process management&lt;/li&gt;
+&lt;li&gt;Power management&lt;/li&gt;
+&lt;li&gt;File system&lt;/li&gt;
+&lt;li&gt;Facilities for user apps&lt;/li&gt;
+&lt;li&gt;Framework and libraries that all the above involved&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;    And they are now temporarily built into a macro kernel but are neatly divided and isolated from each other, making it possible for future changes.&lt;br&gt;
+&lt;figure style=&#34;flex-grow: 155; flex-basis: 373px&#34;&gt;
+		&lt;a href=&#34;https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/bootup.png&#34; data-size=&#34;722x464&#34;&gt;&lt;img src=&#34;https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/bootup.png&#34;
+				srcset=&#34;https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/bootup_hudfc1528e6f2f7b0f1fb3414667faae3a_28487_480x0_resize_box_2.png 480w, https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/bootup_hudfc1528e6f2f7b0f1fb3414667faae3a_28487_1024x0_resize_box_2.png 1024w&#34;
+				width=&#34;722&#34;
+				height=&#34;464&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;Dionysus kernel, after finishing booting and initializations&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;Dionysus kernel, after finishing booting and initializations&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;br&gt;
+    Because of the complexity of file system and the design of interfaces, the development has been slow recently . A rough schedule is to finishe file system by the end of 2020, and finished other kernel modules by mid-2021.&lt;/p&gt;
+&lt;h2 id=&#34;whats-the-plan-for-the-future&#34;&gt;What&amp;rsquo;s the Plan for the Future?&lt;/h2&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 203; flex-basis: 487px&#34;&gt;
+		&lt;a href=&#34;https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/diag.png&#34; data-size=&#34;1110x546&#34;&gt;&lt;img src=&#34;https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/diag.png&#34;
+				srcset=&#34;https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/diag_hu3fef3a514eeba98b5de1bdd09b4b29e4_29200_480x0_resize_box_2.png 480w, https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/diag_hu3fef3a514eeba98b5de1bdd09b4b29e4_29200_1024x0_resize_box_2.png 1024w&#34;
+				width=&#34;1110&#34;
+				height=&#34;546&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;Dionysus kernel, future architecture simple diagram&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;Dionysus kernel, future architecture simple diagram&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;br&gt;
+    To achieve the goal, after all the features are tested to work well, the first step is to implement a object manager to provide uniform interface and security guard for all the resource, making all the resources appears to be handles. and then the modules will be moved to separate processes running under kernel privileges.&lt;br&gt;
+    The reason why system servers still run under kernel privileges is to simplify the development work. And two separate sets of API provided will make it easy to port existent Linux apps like LLVM  C/C++ standard libraries and compiler kits.&lt;br&gt;
+    As another goal for me, a hand-made simple compiler may be implemented and used in the accomplished project, but so far there&amp;rsquo;s no plan to build a kernel with custom compilers.&lt;/p&gt;
+&lt;h2 id=&#34;epilogue&#34;&gt;Epilogue&lt;/h2&gt;
+&lt;p&gt;    I remember that I have had the idea to implement a kernel very early after I learn how to code. The urge become so strong that I make the first attempt when I graduate from junior high school, when I even find it difficult to understand the difference between physical memory and virtual memory. Then I made a few attempts afterwards, slowly becoming aware of the key points of kernel and how to build a kernel. During times of try and fail, I gradually know how to work with Linux distributions and start to  fall under the spell of the philosophy of UNIX. And then I learned more, and finally became determined to write my own. I am serious, and I will try my best this time to build a usable one with everything I&amp;rsquo;d ever imagined on it.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Announcing the Re-xv6-2 project</title>
+        <link>https://xkzzzzzz.xyz/posts/announcing-rexv6-proj/</link>
+        <pubDate>Thu, 30 May 2019 23:11:01 +0800</pubDate>
+        
+        <guid>https://xkzzzzzz.xyz/posts/announcing-rexv6-proj/</guid>
+        <description>&lt;img src="https://xkzzzzzz.xyz/posts/announcing-rexv6-proj/startup.png" alt="Featured image of post Announcing the Re-xv6-2 project" /&gt;&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Being considered as the three romances of a programmer, An OS is both challenging and interesting project to dive in. As a mature codebase of operation system study, xv6 is a good re-implementation of Unix v6, which is used by MIT&amp;rsquo;s 6.828.  This project aims at apply improvements on the a quasi-original codebase of xv6 (&lt;a class=&#34;link&#34; href=&#34;https://github.com/sunziping2016/xv6-improved&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;xv6-improved&lt;/a&gt;) , adding including new kernel features and user support so as to create a linux-like full-featured kernel, including some modern techniques, such as MLFQ scheduling and an extended file system.&lt;br&gt;
+Taking the mistakes of the 1st generation rexv6 project into consideration, the project will firstly be improved on the vital parts such as processes and memory management. Then filesystem and shell will be tweaked and a graphic framework will be finally constructed.&lt;br&gt;
+In the implement of all the features, the algorithms and data structure will be thought over discreetly and put in the first place, instead of the feature itself or the amount of the features, so as to gain great efficiency.&lt;/p&gt;
+&lt;h2 id=&#34;goals&#34;&gt;Goals&lt;/h2&gt;
+&lt;p&gt;Uncomplete and unsorted goals are listed below:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Lottery Scheduler&lt;/li&gt;
+&lt;li&gt;FAT32 support&lt;/li&gt;
+&lt;li&gt;Signals&lt;/li&gt;
+&lt;li&gt;File structures and make system manipulations&lt;/li&gt;
+&lt;li&gt;Support for various file systems and driver types&lt;/li&gt;
+&lt;li&gt;Separating device driver from the kernel&lt;/li&gt;
+&lt;li&gt;Memory management tweaks&lt;/li&gt;
+&lt;li&gt;Shell and GUI&lt;/li&gt;
+&lt;li&gt;POSIX compatibility&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;try-it-out&#34;&gt;Try it out&lt;/h2&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 154; flex-basis: 370px&#34;&gt;
+		&lt;a href=&#34;https://xkzzzzzz.xyz/posts/announcing-rexv6-proj/startup.png&#34; data-size=&#34;735x476&#34;&gt;&lt;img src=&#34;https://xkzzzzzz.xyz/posts/announcing-rexv6-proj/startup.png&#34;
+				srcset=&#34;https://xkzzzzzz.xyz/posts/announcing-rexv6-proj/startup_hu80b4c5ec6394807ea1fe3253899f66ea_21712_480x0_resize_box_2.png 480w, https://xkzzzzzz.xyz/posts/announcing-rexv6-proj/startup_hu80b4c5ec6394807ea1fe3253899f66ea_21712_1024x0_resize_box_2.png 1024w&#34;
+				width=&#34;735&#34;
+				height=&#34;476&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;Starup Screen&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;Starup Screen&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&#34;what-you-need&#34;&gt;What you need&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;A available Linux environment with Qemu installed.&lt;br&gt;
+The alternatives includes WSL and any other virtual PCs. I am using Debian on WSL.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Build-essentials, or at least GNU tools such as gdb and gcc.&lt;br&gt;
+GCC 6.3.0 is being used.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;clone&#34;&gt;Clone&lt;/h3&gt;
+&lt;p&gt;The project is hosted at &lt;a class=&#34;link&#34; href=&#34;https://github.com/SmartPolarBear/rexv6-2&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;rexv6-2&lt;/a&gt;&lt;br&gt;
+&lt;code&gt;$ git clone https://github.com/SmartPolarBear/rexv6-2.git&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;build&#34;&gt;Build&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;$ make qemu&lt;/code&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Respberry Pi 3B&#43; Headless Setup</title>
+        <link>https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/</link>
+        <pubDate>Sat, 23 Feb 2019 19:40:08 +0800</pubDate>
+        
+        <guid>https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/</guid>
+        <description>&lt;img src="https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/Pi1.png" alt="Featured image of post Respberry Pi 3B&#43; Headless Setup" /&gt;&lt;h3 id=&#34;hands-on&#34;&gt;Hands-On&lt;/h3&gt;
+&lt;p&gt;This morning I finally received my Raspberry Pi, after an eight-day-long delivery. Raspberry Pi 3B+, released in 2018, as is said, is more powerful than its predecessor. The first step after opening the box is to add two head sinks on the chip. The CPU doesn&amp;rsquo;t need one although its performance has been greatly improved, for it already has one. The given box has no reserved space for GPIO pins, which make it impossible to use it with GPIO peripherals. Therefore, my trick is that I installed a half of the box opposite down like what&amp;rsquo;s shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 100; flex-basis: 240px&#34;&gt;
+		&lt;a href=&#34;https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/Pi1.png&#34; data-size=&#34;1598x1598&#34;&gt;&lt;img src=&#34;https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/Pi1.png&#34;
+				srcset=&#34;https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/Pi1_hu2bd505227de8178f30754dbe5751e8b4_584110_480x0_resize_box_2.png 480w, https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/Pi1_hu2bd505227de8178f30754dbe5751e8b4_584110_1024x0_resize_box_2.png 1024w&#34;
+				width=&#34;1598&#34;
+				height=&#34;1598&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;Raspberry 3B&amp;#43;&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;Raspberry 3B+&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&#34;setup&#34;&gt;Setup&lt;/h3&gt;
+&lt;p&gt;I planed to run Windows 10 IoT at first, but finally I decided to use Raspbian as the support for 3B+ has not been officially released. The preview version is buggy and what&amp;rsquo;s worse, it can&amp;rsquo;t support the on-board Wi-Fi.&lt;/p&gt;
+&lt;p&gt;As for setup, convenient as it is generally, there&amp;rsquo;s a big obstacle that I don&amp;rsquo;t have either a network cable or a set of keyboard and mouse. Moreover, my main PC runs Windows, which make the process more complicated.&lt;/p&gt;
+&lt;p&gt;For a headless setup, we need two computers if your main computer runs Windows. As we often do for Pi on Windows, I format the micro SD card and write the Raspbian image with SD Card Formatter from Tuxera Inc. and Rufus. Then, the step is a bit different than common. After mounting the card on a &lt;strong&gt;Linux computer&lt;/strong&gt;, edit the file located in &lt;code&gt;/etc/wpa_supplicant/wpa_supplicant.conf&lt;/code&gt; . For example, we use nano.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And append a network section like below:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;ctrl_interface&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;DIR&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/var/run/wpa_supplicant &lt;span class=&#34;nv&#34;&gt;GROUP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;netdev
+&lt;span class=&#34;nv&#34;&gt;update_config&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+
+&lt;span class=&#34;nv&#34;&gt;network&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;={&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;ssid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Your wifi&amp;#39;s SSID&amp;#34;&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;psk&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Password&amp;#34;&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;key_mgmt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;WPA-PSK
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If you are living in China, don&amp;rsquo;t forget a &lt;code&gt;country=CN&lt;/code&gt; before the network section.
+Then insert the card, whose slot should be in &lt;strong&gt;the other end&lt;/strong&gt; of USBs on the board, and power on the Pi. When the red light is on and the green light is off, you can notice a new device in your router&amp;rsquo;s management page, which is often &lt;code&gt;192.168.1.1&lt;/code&gt; or &lt;code&gt;192.168.3.1&lt;/code&gt;. My Pi shows as a &lt;strong&gt;dhcpcd-6.11.5-armv7l&lt;/strong&gt; in the router&amp;rsquo;s management page with the IP shown in the screenshot.&lt;/p&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 662; flex-basis: 1591px&#34;&gt;
+		&lt;a href=&#34;https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/IP1.jpg&#34; data-size=&#34;1200x181&#34;&gt;&lt;img src=&#34;https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/IP1.jpg&#34;
+				srcset=&#34;https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/IP1_hu4a1dd2f37eeab413a48547703d464de3_25080_480x0_resize_q75_box.jpg 480w, https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/IP1_hu4a1dd2f37eeab413a48547703d464de3_25080_1024x0_resize_q75_box.jpg 1024w&#34;
+				width=&#34;1200&#34;
+				height=&#34;181&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;Raspberry 3B&amp;#43;&amp;rsquo;s IP&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;Raspberry 3B+’s IP&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;With the IP address shown, we can easily connect to the Pi by any ssh tools. For example, putty.&lt;/p&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 107; flex-basis: 257px&#34;&gt;
+		&lt;a href=&#34;https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/putty1.png&#34; data-size=&#34;615x574&#34;&gt;&lt;img src=&#34;https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/putty1.png&#34;
+				srcset=&#34;https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/putty1_huc714cd7562ae50425f8e9678279cb743_84738_480x0_resize_box_2.png 480w, https://xkzzzzzz.xyz/posts/resp-pi-headless-setup/putty1_huc714cd7562ae50425f8e9678279cb743_84738_1024x0_resize_box_2.png 1024w&#34;
+				width=&#34;615&#34;
+				height=&#34;574&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;Putty&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;Putty&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&#34;login-and-have-fun&#34;&gt;Login and Have Fun&lt;/h3&gt;
+&lt;p&gt;As a Raspberry Pi denies a remote connection to the &lt;code&gt;root&lt;/code&gt; user, we should login with &lt;code&gt;pi&lt;/code&gt; user and the default password is &lt;code&gt;raspberry&lt;/code&gt;. The connection should be established well now and you can do anything with this tiny Linux device. Have fun!&lt;/p&gt;
+&lt;h3 id=&#34;whats-next&#34;&gt;What&amp;rsquo;s Next&lt;/h3&gt;
+&lt;p&gt;In the next passage I am going to control a LED matrix with GPIO pins. I will write a program in C++ or Python3 to control the MAX7219 module.&lt;/p&gt;
+&lt;h3 id=&#34;reference&#34;&gt;Reference&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://raspberrypi.stackexchange.com/questions/14611/how-to-set-up-raspberry-pi-without-a-monitor&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;How to set up Raspberry Pi without a monitor?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/20794478&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;树莓派 Raspberry Pi 3 无显示器安装&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.microsoft.com/en-us/windows/iot-core/troubleshooting&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Troubleshooting, Raspberry Pi 3B+ booting issues
+&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

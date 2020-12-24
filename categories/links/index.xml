@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Links on XKZZZZZZ&#39;s Lab</title>
+    <link>https://xkzzzzzz.xyz/categories/links/</link>
+    <description>Recent content in Links on XKZZZZZZ&#39;s Lab</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 11 Oct 2020 16:38:04 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/categories/links/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Links</title>
+      <link>https://xkzzzzzz.xyz/links/</link>
+      <pubDate>Sun, 11 Oct 2020 16:38:04 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/links/</guid>
+      <description>Blogs  SpinMry&amp;rsquo;s Lab
+High school student as he is, he has got great amount of knowledge on hardware, especially legacy workstations, PDAs , and calculators, and has a rich experience about bots. He, without doubt, is really good at algorithm and data structure. I present his blog at the top, with great gratitude because he is the person who lead me to think more about and get familiar with Linux.</description>
+    </item>
+    
+  </channel>
+</rss>
