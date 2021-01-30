@@ -6,31 +6,22 @@
     <description>Recent content in Categories on XKZZZZZZ&#39;s Lab</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 27 Dec 2020 00:00:00 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/categories/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Blog</title>
-      <link>https://xkzzzzzz.xyz/categories/blog/</link>
-      <pubDate>Sun, 27 Dec 2020 00:00:00 +0800</pubDate>
-      
-      <guid>https://xkzzzzzz.xyz/categories/blog/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Essay</title>
-      <link>https://xkzzzzzz.xyz/categories/essay/</link>
-      <pubDate>Sun, 27 Dec 2020 00:00:00 +0800</pubDate>
-      
-      <guid>https://xkzzzzzz.xyz/categories/essay/</guid>
-      <description></description>
-    </item>
-    
+    <lastBuildDate>Sun, 11 Oct 2020 16:38:04 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Links</title>
       <link>https://xkzzzzzz.xyz/categories/links/</link>
       <pubDate>Sun, 11 Oct 2020 16:38:04 +0800</pubDate>
       
       <guid>https://xkzzzzzz.xyz/categories/links/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Blog</title>
+      <link>https://xkzzzzzz.xyz/categories/blog/</link>
+      <pubDate>Sun, 11 Oct 2020 16:25:35 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/categories/blog/</guid>
       <description></description>
     </item>
     
