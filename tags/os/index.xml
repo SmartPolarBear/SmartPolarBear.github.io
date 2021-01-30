@@ -6,7 +6,17 @@
     <description>Recent content in OS on XKZZZZZZ&#39;s Lab</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Oct 2020 16:25:35 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/tags/os/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 30 Jan 2021 23:55:00 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/tags/os/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Project Dionysus : The Vision of 2021</title>
+      <link>https://xkzzzzzz.xyz/posts/project-dionysus-vision-of-2021/</link>
+      <pubDate>Sat, 30 Jan 2021 23:55:00 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/posts/project-dionysus-vision-of-2021/</guid>
+      <description>Now, at the beginning of 2021, while celebrating the anniversary of this project, where most of my effort in the past year was devoted, it&amp;rsquo;s vital to make clear the road head for it.
+Hindsight What has been done for it in the past year and a few months? Above growing from the very first assembly file to a large project with tens of thousands of lines of code, these aspects stands out:</description>
+    </item>
+    
     <item>
       <title>Project Dionysus - Why and What</title>
       <link>https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/</link>
@@ -14,16 +24,6 @@
       
       <guid>https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/</guid>
       <description>Prologue  Dating back to a year ago, when I was attempting to add various features to the original rexv6-2 project, I am trapped by some very tough issues. I had been ambitious about the plan, but many of them turn out to be too hard to be carried out, and some of the original code of xv6, frankly speaking, is somehow out of date. That&amp;rsquo;s when it flashed on me that it may be better to build a new one from scratch.</description>
-    </item>
-    
-    <item>
-      <title>Project Dionysus : The Vision of 2021</title>
-      <link>https://xkzzzzzz.xyz/posts/project-dionysus-vision-of-2021/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://xkzzzzzz.xyz/posts/project-dionysus-vision-of-2021/</guid>
-      <description>Now, at the beginning of 2021, while celebrating the anniversary of this project, where most of my effort in the past year was devoted, it&amp;rsquo;s vital to make clear the road head for it.
-Hindsight What has been done for it in the past year and a few months? Above growing from the very first assembly file to a large project with tens of thousands of lines of code, these aspects stands out:</description>
     </item>
     
   </channel>

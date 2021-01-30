@@ -6,7 +6,56 @@
         <description>Recent content on XKZZZZZZ&#39;s Lab</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sun, 11 Oct 2020 16:38:04 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 30 Jan 2021 23:55:00 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Project Dionysus : The Vision of 2021</title>
+        <link>https://xkzzzzzz.xyz/posts/project-dionysus-vision-of-2021/</link>
+        <pubDate>Sat, 30 Jan 2021 23:55:00 +0800</pubDate>
+        
+        <guid>https://xkzzzzzz.xyz/posts/project-dionysus-vision-of-2021/</guid>
+        <description>&lt;img src="https://xkzzzzzz.xyz/posts/project-dionysus-vision-of-2021/dionysus.jpg" alt="Featured image of post Project Dionysus : The Vision of 2021" /&gt;&lt;p&gt;Now, at the beginning of 2021, while celebrating the anniversary of this project, where most of my effort in the past year was devoted, it&amp;rsquo;s vital to make clear the road head for it.&lt;/p&gt;
+&lt;h2 id=&#34;hindsight&#34;&gt;Hindsight&lt;/h2&gt;
+&lt;p&gt;What has been done for it in the past year and a few months? Above growing from the very first assembly file to a large project with tens of thousands of lines of code, these aspects stands out:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;The Improvement of infrastructures of kernel&lt;/strong&gt; at the end of 2020, after 4 months struggling with file system, a minimum subset of EXT2 which support common operations like reading, creating and writing are implemented with a complete VFS abstraction. For the first time RAII and class hierarchy were adopted for kernel components. With the filesystem, all the modules of a usable kernel have been worked on more or less.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Reliable build system has been adopted&lt;/strong&gt; Growing larger and larger, it&amp;rsquo;s difficult to manage the project by traditional makefiles, which is why CMake was introduced at earlier time last year. And after the long time working on the project, the decision turns out to be right. CMake provides a powerful tool to manage the project, as well as external dependencies.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Code style and best practices were formed&lt;/strong&gt; Working long time with kernel, code styles like naming conventions have gained stability, and common best practices on kernel coding have been figured out.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;now&#34;&gt;Now&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Better process model&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Optimized memory management&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Cache for file system&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Refactoring and resource leaks fixing&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;future&#34;&gt;Future&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Move things out of kernel&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Improved synchronization infrastructures&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Rights and security&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>Project Dionysus - Why and What</title>
         <link>https://xkzzzzzz.xyz/posts/project-dionysus-why-and-what/</link>
         <pubDate>Sun, 11 Oct 2020 16:25:35 +0800</pubDate>
@@ -207,55 +256,6 @@ Then insert the card, whose slot should be in &lt;strong&gt;the other end&lt;/st
     &gt;Troubleshooting, Raspberry Pi 3B+ booting issues
 &lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-</description>
-        </item>
-        <item>
-        <title>Project Dionysus : The Vision of 2021</title>
-        <link>https://xkzzzzzz.xyz/posts/project-dionysus-vision-of-2021/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://xkzzzzzz.xyz/posts/project-dionysus-vision-of-2021/</guid>
-        <description>&lt;p&gt;Now, at the beginning of 2021, while celebrating the anniversary of this project, where most of my effort in the past year was devoted, it&amp;rsquo;s vital to make clear the road head for it.&lt;/p&gt;
-&lt;h2 id=&#34;hindsight&#34;&gt;Hindsight&lt;/h2&gt;
-&lt;p&gt;What has been done for it in the past year and a few months? Above growing from the very first assembly file to a large project with tens of thousands of lines of code, these aspects stands out:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;The Improvement of infrastructures of kernel&lt;/strong&gt; at the end of 2020, after 4 months struggling with file system, a minimum subset of EXT2 which support common operations like reading, creating and writing are implemented with a complete VFS abstraction. For the first time RAII and class hierarchy were adopted for kernel components. With the filesystem, all the modules of a usable kernel have been worked on more or less.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Reliable build system has been adopted&lt;/strong&gt; Growing larger and larger, it&amp;rsquo;s difficult to manage the project by traditional makefiles, which is why CMake was introduced at earlier time last year. And after the long time working on the project, the decision turns out to be right. CMake provides a powerful tool to manage the project, as well as external dependencies.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Code style and best practices were formed&lt;/strong&gt; Working long time with kernel, code styles like naming conventions have gained stability, and common best practices on kernel coding have been figured out.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;now&#34;&gt;Now&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Better process model&lt;/strong&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;**Optimized memory management **&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;**Cache for file system **&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;**Refactoring and resource leaks fixing **&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;future&#34;&gt;Future&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Move things out of kernel&lt;/strong&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Improved synchronization infrastructures&lt;/strong&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Rights and security&lt;/strong&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
 </description>
         </item>
         
