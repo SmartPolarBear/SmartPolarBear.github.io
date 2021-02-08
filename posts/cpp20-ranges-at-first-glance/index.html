@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Have fun with C&#43;&#43;20 ranges, the so-called STL 2.0'><title>C&#43;&#43;20 Ranges at First Glance</title>
+
+<link rel='canonical' href='https://xkzzzzzz.xyz/posts/cpp20-ranges-at-first-glance/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='C&#43;&#43;20 Ranges at First Glance'>
+<meta property='og:description' content='Have fun with C&#43;&#43;20 ranges, the so-called STL 2.0'>
+<meta property='og:url' content='https://xkzzzzzz.xyz/posts/cpp20-ranges-at-first-glance/'>
+<meta property='og:site_name' content='XKZZZZZZ&#39;s Lab'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='C&#43;&#43;20' /><meta property='article:tag' content='Ranges' /><meta property='article:tag' content='Coroutines' /><meta property='article:tag' content='Language' /><meta property='article:published_time' content='2021-02-07T23:40:03&#43;08:00'/><meta property='article:modified_time' content='2021-02-07T23:40:03&#43;08:00'/>
+<meta name="twitter:title" content="C&#43;&#43;20 Ranges at First Glance">
+<meta name="twitter:description" content="Have fun with C&#43;&#43;20 ranges, the so-called STL 2.0">
+    </head>
+    <body class="article-page keep-sidebar">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended ">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hub8e0e01de07ab5d0590684d8270298a2_124947_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">😆</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://xkzzzzzz.xyz">XKZZZZZZ&#39;s Lab</a></h1>
+        <h2 class="site-description">E pluribus Unum.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/blog/" >
+                Blog
+            </a>
+        
+            <a href="/categories/essay/" >
+                Essay
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/posts/cpp20-ranges-at-first-glance/">C&#43;&#43;20 Ranges at First Glance</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        Have fun with C&#43;&#43;20 ranges, the so-called STL 2.0
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Feb 07, 2021</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <p>Since years before C++ 20&rsquo;s release, I have been keeping a close eye on it. Many new features fairly tickle my fancy, among which are <code>&lt;ranges&gt;</code>  and <code>&lt;format&gt;</code> library components. While there&rsquo;s no available implementation for <code>&lt;format&gt;</code> yet, MSVC 16.8 and GCC-10 provides a usable  <code>&lt;ranges&gt;</code> which I played with and writes the post for.</p>
+<p>My life highly involved closely with programming begins with a long period using C#. Among all the language features of C#, LINQ is the beloved one for me. Enabled by LINQ, I can express complicated queries clearly and elegantly, and the performance is ensured by delaying the evaluation to when the results is used. Years after my last C# project, the smooth feeling using LINQ still remain fresh in my memory. The ranges library, now, enable I to do it similarly, which is why I dash to have a try.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a class="link" href="#id-what" >What is a Range</a></li>
+<li><a class="link" href="#id-use" >Use Ranges</a></li>
+<li><a class="link" href="#id-ca" >Ranges and Constrained Algorithms</a></li>
+<li><a class="link" href="#id-ra" >Ranges and Range Adapters</a></li>
+<li><a class="link" href="#id-le" >Lazy Evaluation</a></li>
+<li><a class="link" href="#id-rc" >Ranges and Coroutines</a></li>
+<li><a class="link" href="#id-ep" >Epilogue</a></li>
+<li><a class="link" href="#id-fr" >Further Reading</a></li>
+</ol>
+<h2 id="what-is-a-range-a-nameid-whata">What is a Range? <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<p>As is mentioned in <a class="link" href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4128.html"  target="_blank" rel="noopener"
+    >N4128</a> , A range is a reference to a sequence of elements:</p>
+<blockquote>
+<p>A range is an object that refers to a sequence of elements, conceptually similar to a pair of iterators.</p>
+</blockquote>
+<p>Bjarne Stroustrup, emphasized in his <em>Thriving in a Crowded and Changing World: C++ 2006–2020</em>, that :</p>
+<blockquote>
+<p>A range is a concept.</p>
+</blockquote>
+<p>A range is defined by concept as follows (from <a class="link" href="https://en.cppreference.com/w/cpp/ranges/range"  target="_blank" rel="noopener"
+    >std::ranges::range on cppreference</a>) :</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">T</span> <span class="o">&gt;</span>
+<span class="k">concept</span> <span class="n">range</span> <span class="o">=</span> <span class="k">requires</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">ranges</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">t</span><span class="p">);</span> <span class="c1">// equality-preserving for forward iterators
+</span><span class="c1"></span>  <span class="n">ranges</span><span class="o">::</span><span class="n">end</span>  <span class="p">(</span><span class="n">t</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div><p>The definition, given that you have known about STL containers, is quite easy to understand. Given <code>begin()</code> and <code>end()</code>, it constraints what can be iterated by an iterator and a sentinel that marks the end.</p>
+<p>Iterators are constantly seen especially in STL to define a sequence, which provide a uniform interface to operate or traverse the elements and support some important language features like range-based for, while they do have some inconvenience. A simple example is to traverse part of a container whose elements satisfy a certain criterion with range-based for loop. Moreover, the increasing need for a way to avoid many variables to store intermediate results while ensuring the security gives birth to the STL <code>&lt;ranges&gt;</code>, which is likely to be used more widely than its <code>Boost.ranges</code> ancestor.  The ranges library defines a lot of components for dealing with ranges, commonly-used view adapters included. With its various new features and improvements, it is called &ldquo;the STL 2.0&rdquo;.</p>
+<h2 id="use-ranges-a-nameid-usea">Use Ranges <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<p>Enable <code>&lt;ranges&gt;</code> is relatively easy,  as a language feature of C++ 20, The only configuration needed is to set the language version to C++ 20 .</p>
+<h3 id="msvc-168-and-later">MSVC 16.8 and Later</h3>
+<p>In MSVC, set the language standard to &ldquo;Features from the Latest C++ Working Draft&rdquo; (<code>/std:c++latest</code>) in project&rsquo;s <em>Properties-&gt;Configuration Properties-&gt;General</em> :<br>
+<figure style="flex-grow: 159; flex-basis: 383px">
+		<a href="/posts/cpp20-ranges-at-first-glance/set-language-standard.png" data-size="753x471"><img src="/posts/cpp20-ranges-at-first-glance/set-language-standard.png"
+				srcset="/posts/cpp20-ranges-at-first-glance/set-language-standard_hub856ef8b2646e70076cdb69a8de32fb6_22546_480x0_resize_box_2.png 480w, /posts/cpp20-ranges-at-first-glance/set-language-standard_hub856ef8b2646e70076cdb69a8de32fb6_22546_1024x0_resize_box_2.png 1024w"
+				width="753"
+				height="471"
+				loading="lazy"
+				alt="Setting">
+		</a>
+		
+		<figcaption>Setting</figcaption>
+		
+	</figure></p>
+<h3 id="gcc-10-and-later">GCC-10 and Later</h3>
+<p>In GCC, simply pass <code>-std=c++20</code> to the compiler.</p>
+<h3 id="implementation-status">Implementation Status</h3>
+<p>It is worth mentioning that MSVC&rsquo;s implementation is quite a partial one with inferior support for range adapters, and the Intellisense does not work well from time to time. However, there are some components of coroutines that only available in MSVC, so some of the code snippets below are compiled with and only with MSVC, and others are, and maybe only are compiled with GCC-11. For details, refer to <a class="link" href="https://en.cppreference.com/w/cpp/compiler_support/20"  target="_blank" rel="noopener"
+    >Compiler support for C++20</a>, or the C++ status page of certain compiler.</p>
+<h2 id="ranges-and-constrained-algorithms-a-nameid-caa">Ranges and Constrained Algorithms <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<p>Remeber how we use, for example, <code>std::sort</code> to sort a <code>vector&lt;int&gt;</code>? We always use iterators in the paradigm of <em>[first,one_beyond_last)</em> to express the elements that needs sorting, but given that we sort the whole container, is there any chance for it to be simplified? <strong>YES!</strong> with Ranges. As containers like a <code>vector</code> has the <code>begin()</code> and <code>end()</code> member, the container itself is a range, so with ranges following code can be write:</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ranges</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">vec</span><span class="p">);</span>	
+<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">i</span><span class="p">:</span><span class="n">vec</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="n">i</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>Such simpified STL algrithms are called <a class="link" href="https://en.cppreference.com/w/cpp/algorithm/ranges"  target="_blank" rel="noopener"
+    >Constrained algorithms</a>. Nearly all STL algorithms have constrained version, which not only simplified the use, but also strengthen the ability of the ranges library if used with what&rsquo;s discussed below.</p>
+<h2 id="ranges-and-range-adapters-a-nameid-raa">Ranges and Range Adapters <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<p>Let&rsquo;s begin with a relatively easy example. Now given a container of integers, the task is to get the first two even ones and get their squares. With ranges library, it&rsquo;s straight forward to express the task as follows:</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;ranges&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="o">::</span><span class="n">views</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">{</span> <span class="mi">20</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span> <span class="p">};</span>
+
+	<span class="k">auto</span> <span class="n">even</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="p">};</span>
+
+	<span class="k">auto</span> <span class="n">square</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">;</span> <span class="p">};</span>
+
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="nl">i</span> <span class="p">:</span> <span class="n">std</span><span class="o">::</span><span class="n">views</span><span class="o">::</span><span class="n">take</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">views</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">views</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">even</span><span class="p">),</span> <span class="n">square</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div><p>But, hey, is there any difference with traditional way to deal with containers? The prolonged and complicated nested function calling <code>std::views::take(std::views::transform(std::views::filter(vec, even), square), 2)</code> is the very thing that many programmers dislike to see, let along the complexity to add a new operation or change the order.  Why isn&rsquo;t it good to see? partly because readers should find the operands from the inner-most call and then read the parameters and recursively going out layer by layer. Constantly glancing forth and back is tiring, right?  So it&rsquo;s time to introduce what really pleased me of the ranges library: the pipeline operator.</p>
+<p>As a noticeable feature of ranges library,  the pipeline operator  <code>|</code> means delivering the output of its left-hand operand as the input to its right-hand operand. This enables a elegant way to express a sequence of operations for something, or somehow a functional-style programming. With the magic of it, we can turn the traditional composing syntax to the following code :</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="nl">i</span> <span class="p">:</span> <span class="n">vec</span> <span class="o">|</span> <span class="n">filter</span><span class="p">(</span><span class="n">even</span><span class="p">)</span> 
+			<span class="o">|</span> <span class="n">transform</span><span class="p">([](</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">;</span> <span class="p">})</span>
+			<span class="o">|</span> <span class="n">take</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="p">{</span>
+	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div><p>Pretty and clear, isn&rsquo;t it ? the container and the operations on it are concatenated with the pipeline operator and is used by the range-based for. When reading the code, we glance the operands of the pipeline operators line by line, providing a very nature and easy way to understand the code. It is the relief of mental burden that reduces the change of producing buggy code.</p>
+<p><code>filter()</code> , <code>transform()</code>, and <code>take()</code> plays an important part in the code above, which are called <em><strong>range adapters</strong></em>. Range adapters take <a class="link" href="https://en.cppreference.com/w/cpp/ranges/viewable_range"  target="_blank" rel="noopener"
+    ><code>viewable_range</code></a>s as their parameters and can be called by the pipe operators. The standard library defined a set of range adapters (<a class="link" href="https://en.cppreference.com/w/cpp/ranges"  target="_blank" rel="noopener"
+    >Ranges on cppreference</a>), which provide various transformation on ranges. For example, to join many containers, the code below can be simply write:</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">vec2</span><span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">},{</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">},{</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">}</span> <span class="p">};</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="nl">i</span> <span class="p">:</span> <span class="n">vec2</span> <span class="o">|</span> <span class="n">std</span><span class="o">::</span><span class="n">views</span><span class="o">::</span><span class="n">join</span><span class="p">)</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&#34; &#34;</span><span class="p">;</span>
+</code></pre></div><p>which gives the output:</p>
+<blockquote>
+<p>1 2 3 4 5 6</p>
+</blockquote>
+<p>Also by using <code>std::views::join</code>, we can concatenate strings:</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">auto</span> <span class="n">parts</span><span class="o">=</span><span class="p">{</span><span class="s">&#34;c&#34;</span><span class="n">sv</span><span class="p">,</span><span class="s">&#34;+&#34;</span><span class="n">sv</span><span class="p">,</span><span class="s">&#34;+&#34;</span><span class="n">sv</span><span class="p">,</span><span class="s">&#34;20&#34;</span><span class="n">sv</span><span class="p">};</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="nl">c</span> <span class="p">:</span> <span class="n">parts</span> <span class="o">|</span> <span class="n">std</span><span class="o">::</span><span class="n">views</span><span class="o">::</span><span class="n">join</span><span class="p">)</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">;</span>
+</code></pre></div><p>which gives the output:</p>
+<blockquote>
+<p>c++20</p>
+</blockquote>
+<p>Moreover, we can take element from a container of tuples by using <code>std::views::elements</code> :</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">vector</span><span class="o">&lt;</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">vec3</span><span class="p">{{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">}};</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="nl">e</span> <span class="p">:</span> <span class="n">vec3</span> <span class="o">|</span> <span class="n">std</span><span class="o">::</span><span class="n">views</span><span class="o">::</span><span class="n">elements</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">)</span>
+	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">e</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div><p>The outputs are</p>
+<blockquote>
+<p>2<br>
+5<br>
+8</p>
+</blockquote>
+<p>With these range adapters' help, it is no longer a problem to write elegant code to operate ranges with good readability. But what concerns to C++ programmers is that, what about performance ?</p>
+<h2 id="lazy-evaluation-a-nameid-lea">Lazy Evaluation <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<p>C++ programmers cares about performance, so how does the <code>&lt;ranges&gt;</code> library ensure it? the key is lazy evaluation.  Lets take the a simple code snippet as a example.</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">{</span> <span class="mi">20</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span> <span class="p">};</span>
+<span class="k">auto</span> <span class="n">v</span> <span class="o">=</span> <span class="n">vec</span> <span class="o">|</span> <span class="n">filter</span><span class="p">(</span><span class="n">even</span><span class="p">)</span> <span class="o">|</span> <span class="n">transform</span><span class="p">([](</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">;</span> <span class="p">})</span><span class="o">|</span> <span class="n">take</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div><p>Here the whole expression of the second line <code>auto v = ...</code>  generates a view, neither modifying what in <code>vec</code>, nor copying any elements to elsewhere and storing theme. In other words, the construct of <code>v</code> has nothing to do with the size of <code>vec</code>.</p>
+<p>Then we print <code>*v.begin()</code>, which is when the evaluation happens. The on-demand evaluation not only ensure that they can be used everywhere iterators can be used, but also make sure the performance with complicated transformations, for evaluation happens just when the value is used and will not happen a second time. Sounds great, isn&rsquo;t it? If only it can play with not only STL containers.</p>
+<h2 id="ranges-and-coroutines-a-nameid-rca">Ranges and Coroutines <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<p>Coroutine is indeed the focus of C++ 20, which enjoys great popularity even before its release. Coroutines are, in simple words, functions that can suspend and resume. Isn&rsquo;t it traits give you a strong sense that it&rsquo;s a good couple with the ranges library, given that it has the lazy evaluation feature?</p>
+<p>For example, with <a class="link" href="https://en.cppreference.com/w/cpp/language/coroutines"  target="_blank" rel="noopener"
+    >Coroutines (C++20)</a>, it&rsquo;s easy to write a Fibonacci generator like this:</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="c1">// #include &lt;experimental/generator&gt; on MSVC 16.8
+</span><span class="c1"></span><span class="n">experimental</span><span class="o">::</span><span class="n">generator</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;</span> <span class="n">fib</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">n</span><span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+	<span class="kt">uint64_t</span> <span class="n">buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span> <span class="p">};</span>
+
+	<span class="k">for</span> <span class="p">(</span><span class="kt">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="n">buf</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">buf</span><span class="p">[(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">];</span>
+		<span class="p">}</span>
+
+		<span class="k">co_yield</span> <span class="n">buf</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">3</span><span class="p">];</span>
+	<span class="p">}</span>
+
+	<span class="k">co_return</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>It is surely not what we regard as a container, which all the examples above dealt with. However, remember what mentioned in the beginning that :</p>
+<blockquote>
+<p>A range is a concept.</p>
+</blockquote>
+<p>Given that a generator has <code>begin()</code> and <code>end()</code> member, it satisfies the concept and therefore cooperates well with the ranges library. The code below demonstrates how to filter even numbers from the first 15 elements of the Fibonacci sequence.</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">auto</span> <span class="n">fib_gen</span> <span class="o">=</span> <span class="n">fib</span><span class="p">(</span><span class="mi">15</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">even_fib</span><span class="o">=</span><span class="n">fib_gen</span> <span class="o">|</span> <span class="n">views</span><span class="o">::</span><span class="n">filter</span><span class="p">([](</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="n">a</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="p">;});</span>
+</code></pre></div><p>And, with the help of coroutines and ranges, till now, no real evaluation happens, until we really use some of its values, like iterating through the even numbers:</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">v</span> <span class="p">:</span> <span class="n">even_fib</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">v</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>which gives the output:<br>
+<figure style="flex-grow: 87; flex-basis: 209px">
+		<a href="/posts/cpp20-ranges-at-first-glance/output_even_fib.png" data-size="131x150"><img src="/posts/cpp20-ranges-at-first-glance/output_even_fib.png"
+				srcset="/posts/cpp20-ranges-at-first-glance/output_even_fib_hu1394eb2c4939cfc5e0372b3dbf998fee_3553_480x0_resize_box_2.png 480w, /posts/cpp20-ranges-at-first-glance/output_even_fib_hu1394eb2c4939cfc5e0372b3dbf998fee_3553_1024x0_resize_box_2.png 1024w"
+				width="131"
+				height="150"
+				loading="lazy"
+				alt="Even fibonacci numbers">
+		</a>
+		
+		<figcaption>Even fibonacci numbers</figcaption>
+		
+	</figure></p>
+<h2 id="epilogue--a-nameid-epa">Epilogue  <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<p>Ranges, as a important and useful library component, deserve the &ldquo;STL 2.0&rdquo; name, and provides a uniform way to express the concept of range and compose transformation and STL algorithms. Although the ranges are not aimed to replace iterators, they reduce the explicit use of iterators, simplifying code.</p>
+<p>With ranges and coroutines, more effective programs with elegant code and good code readability will be really easy to achieve, which handle IO delays and parallelism well. In the near future, <a class="link" href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/n4734.pdf"  target="_blank" rel="noopener"
+    >Networking TS</a> is going to be merged into C++23, when coroutines and ranges can be used widely by larger number of applications. For example, <code>const_buffer</code> and 	<code>mutable_buffer</code> of the <em>Networking TS</em> satisfy the <code>range</code> concept.</p>
+<h2 id="further-reading--a-nameid-fra">Further Reading  <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h4 id="1-thriving-in-a-crowded-and-changing-world-c-20062020-bjarne-stroustrup">1. Thriving in a Crowded and Changing World: C++ 2006–2020, Bjarne Stroustrup.</h4>
+<p>This paper demonstrate the history of modern C++ (C++11 and later) and gives a comprehensive  view of language and library features like concepts, coroutines and ranges, as well as their history.</p>
+<h4 id="2ranges-tshttpwwwopen-stdorgjtc1sc22wg21docspapers2017n4685pdf-and-coroutines-tshttpswwwisoorgstandard73008html">2.<a class="link" href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4685.pdf"  target="_blank" rel="noopener"
+    >Ranges TS</a> and <a class="link" href="https://www.iso.org/standard/73008.html"  target="_blank" rel="noopener"
+    >(Coroutines TS)</a></h4>
+<p>Standard documents about the ranges library and coroutines.</p>
+<h4 id="3a-beginners-guide-to-c-ranges-and-viewshttpshanneshauswedellnetpost20191130range_intro">3.<a class="link" href="https://hannes.hauswedell.net/post/2019/11/30/range_intro/"  target="_blank" rel="noopener"
+    >A beginner&rsquo;s guide to C++ Ranges and Views.</a></h4>
+<p>Very concrete introduction to the ranges concepts and views.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/c&#43;&#43;20/">C&#43;&#43;20</a>
+        
+            <a href="/tags/ranges/">Ranges</a>
+        
+            <a href="/tags/coroutines/">Coroutines</a>
+        
+            <a href="/tags/language/">Language</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+     
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="SmartPolarBear/SmartPolarBear.github.io"
+        issue-term="pathname"
+        theme="preferred-color-scheme" 
+        
+        label="comment"
+        
+        crossorigin="anonymous" 
+        async>
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 XKZZZZZZ&#39;s Lab
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.0.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+
+            </main>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"
+    integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin="anonymous"></script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

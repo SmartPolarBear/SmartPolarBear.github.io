@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Coroutines on XKZZZZZZ&#39;s Lab</title>
+    <link>https://xkzzzzzz.xyz/tags/coroutines/</link>
+    <description>Recent content in Coroutines on XKZZZZZZ&#39;s Lab</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 07 Feb 2021 23:40:03 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/tags/coroutines/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C&#43;&#43;20 Ranges at First Glance</title>
+      <link>https://xkzzzzzz.xyz/posts/cpp20-ranges-at-first-glance/</link>
+      <pubDate>Sun, 07 Feb 2021 23:40:03 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/posts/cpp20-ranges-at-first-glance/</guid>
+      <description>Since years before C++ 20&amp;rsquo;s release, I have been keeping a close eye on it. Many new features fairly tickle my fancy, among which are &amp;lt;ranges&amp;gt; and &amp;lt;format&amp;gt; library components. While there&amp;rsquo;s no available implementation for &amp;lt;format&amp;gt; yet, MSVC 16.8 and GCC-10 provides a usable &amp;lt;ranges&amp;gt; which I played with and writes the post for.
+My life highly involved closely with programming begins with a long period using C#. Among all the language features of C#, LINQ is the beloved one for me.</description>
+    </item>
+    
+  </channel>
+</rss>
