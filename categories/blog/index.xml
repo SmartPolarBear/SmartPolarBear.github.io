@@ -6,7 +6,17 @@
     <description>Recent content in Blog on XKZZZZZZ&#39;s Lab</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 07 Feb 2021 23:40:03 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/categories/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 28 Apr 2021 00:00:00 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/categories/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Looking Back to 2020: PROVEHITO IN ALTUM</title>
+      <link>https://xkzzzzzz.xyz/posts/looking-back-in-2020-provehito-in-altum/</link>
+      <pubDate>Wed, 28 Apr 2021 00:00:00 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/posts/looking-back-in-2020-provehito-in-altum/</guid>
+      <description>It&amp;rsquo;s mid-2021, and this post, which is supposed to come out in Janurary, is finally complete. 2020 is a special year, both for the whole world and me. After consideration, I still believe that it deserve some record and hindsight for myself.
+See Further  Entering the university, the courses, complicated and difficult, provide more higher perspective in understanding and analyzing than challenges. I had ever tried to apply transformations on image with GDI+, where all the adjustments made, like changes in brightness or saturation, are expressed in what&amp;rsquo;s called a transforming matrix.</description>
+    </item>
+    
     <item>
       <title>C&#43;&#43;20 Ranges at First Glance</title>
       <link>https://xkzzzzzz.xyz/posts/cpp20-ranges-at-first-glance/</link>
