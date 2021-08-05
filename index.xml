@@ -6,7 +6,291 @@
         <description>Recent content on XKZZZZZZ&#39;s Lab</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Wed, 28 Apr 2021 00:00:00 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 05 Aug 2021 22:50:42 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Achieve Better Parallel Code with Clang Static Thread Analysis</title>
+        <link>https://xkzzzzzz.xyz/posts/clang-thread-analysis/</link>
+        <pubDate>Thu, 05 Aug 2021 22:50:42 +0800</pubDate>
+        
+        <guid>https://xkzzzzzz.xyz/posts/clang-thread-analysis/</guid>
+        <description>&lt;p&gt;In the recent two years, thanks to AMD&amp;rsquo;s great job to push the industry forward,  we can see the trend that the number of cores of CPU grow rapidly, reaching 8c16t for gaming laptops and high-performance PCs, while the growth of single core performance seems to be slower. That&amp;rsquo;s probably why parallelism plays such a important role in modern programming. With out it, it is impossible to make the most of the progress of hardware.&lt;/p&gt;
+&lt;p&gt;Nevertheless, it&amp;rsquo;s none of a easy job. Parallel programs are known for difficulties in debugging.  And, as an effective way to synchronization, locks are widely used, but the programs are not that easy to reason about. Surely programmers should learn well about the techniques for concurrency, but, hey, when coding a real project we can hardly spare enough effort to reason about locks while solving the problem, can we? Fortunately, clang provide a mechanism called &lt;a class=&#34;link&#34; href=&#34;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Thread Safety Analysis&lt;/a&gt; to help us out!&lt;/p&gt;
+&lt;h2 id=&#34;what-is-clang-thread-safety-analysis&#34;&gt;What is Clang Thread Safety Analysis&lt;/h2&gt;
+&lt;p&gt;As said by the official document:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Clang Thread Safety Analysis is a C++ language extension which warns about potential race conditions in code. The analysis is completely static (i.e. compile-time); there is no run-time overhead.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In a word, by applying simple attributes on classes and functions the compiler can help us detect thread safety problems without losing any runtime performance.&lt;/p&gt;
+&lt;h2 id=&#34;race-condition&#34;&gt;Race Condition&lt;/h2&gt;
+&lt;p&gt;When working with parallelism, it matters a lot  how the access to data, for example, a variable, is controlled. Consider the following code: a simple method that should keep the invariant &lt;code&gt;x_==0&lt;/code&gt; always:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;foo&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;public&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+
+	&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+		&lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+		&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;this_thread&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;yield&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;assert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+		&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;private&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+	&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When called with a single thread, it without doubts keeps the invariant and therefore loops forever. But when called with two threads, it crashes because the assert testing fails sometime when executing &lt;code&gt;bar()&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;foo&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;public&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+
+	&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+		&lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+		&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;this_thread&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;yield&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;assert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+		&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;private&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+	&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+
+&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;baz&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+	&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;thread&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;t1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;baz&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+	&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;thread&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;t2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;baz&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+
+	&lt;span class=&#34;n&#34;&gt;t1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+	&lt;span class=&#34;n&#34;&gt;t2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For those who is familiar with parallism, apparently, there&amp;rsquo;s a critical section in &lt;code&gt;bar()&lt;/code&gt;, which may mess things up when called by multiple threads, because two of the threads may accidentally read &lt;code&gt;x_&lt;/code&gt; and do the arithmetics at the right time, when &lt;code&gt;x_=x_+1&lt;/code&gt; is executed twice before one thread reaches the &lt;code&gt;x_=x_-1&lt;/code&gt; and then the assertion, result in a failure. A effective way to deal with it is to protect the access to &lt;code&gt;x_&lt;/code&gt; with a lock like this  :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;foo&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;public&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+
+	&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+		&lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+		&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lock_guard&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lock_&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;this_thread&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;yield&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+			&lt;span class=&#34;n&#34;&gt;assert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+		&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;private&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+	&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x_&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+	&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mutex&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lock_&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{};&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+
+&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;baz&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+	&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;thread&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;t1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;baz&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+	&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;thread&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;t2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;baz&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+
+	&lt;span class=&#34;n&#34;&gt;t1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+	&lt;span class=&#34;n&#34;&gt;t2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It loops forever again, without a single failure.&lt;br&gt;
+Here, it&amp;rsquo;s a piece of cake to figure out which variable is protected by some certain lock, but in a real project the relationship can be extremely complicated, making it hard to figure out. Moreover, we are all human. We make mistakes. It threatens the thread safety, and as well known, such kind of bug cuased by  &lt;strong&gt;race condition&lt;/strong&gt; is especially hard to debug, and standard way of avoiding bugs like unit testing can not effectively deal with such a problem. Can we keep them in order by some tool? Remember how we deal with the fact that man make mistakes in type? We declare variables and specified its type explicitly. Similarly, we can also declare (optionally) how access to that data is controlled in a multi-threaded environment, given that we have a proper tool. Now here come the &lt;a class=&#34;link&#34; href=&#34;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Thread Safety Analysis&lt;/a&gt; to be the very tool that we need. To use it.&lt;/p&gt;
+&lt;h2 id=&#34;capabilities&#34;&gt;Capabilities&lt;/h2&gt;
+&lt;p&gt;Thread safety analysis ensures the calling thread cannot access the &lt;em&gt;resource&lt;/em&gt; unless it has the &lt;em&gt;capabilities&lt;/em&gt; associated with C++ objects. Here, &lt;em&gt;resource&lt;/em&gt; refers to things like function calling, read and write.  Different methods can acquire or release the capability. As the example in it document:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;if &lt;code&gt;mu&lt;/code&gt; is a mutex, then calling &lt;code&gt;mu.Lock()&lt;/code&gt; causes the calling thread to acquire the capability to access data that is protected by &lt;code&gt;mu&lt;/code&gt;. Similarly, calling &lt;code&gt;mu.Unlock()&lt;/code&gt; releases that capability.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Holding the capability is either exclusive or shared. An exclusive capability can be held by only one thread at a time, while a shared capability can be held by many threads at the same time. This mechanism enforces a multiple-reader, single-writer pattern. Write operations to protected data require exclusive access, while read operations require only shared access. A thread may hold a specific set of capabilities. By using thread annotations, we claim how those capabilities are held without caring about the underlaying mechanism used to acquire and release them, assuming that the underlaying implementation like the mutex is reliable enough to handle the handoff of capabilities.&lt;/p&gt;
+&lt;p&gt;The compiler will approximate the real condition of capabilities held at run time as &lt;em&gt;capability environment&lt;/em&gt;. It describes the set of capabilities that are statically known to be held or not held at some particular point. By analyzing these approximations, compiler give warnings about potential mistakes about capabilities.&lt;/p&gt;
+&lt;h2 id=&#34;attributes&#34;&gt;Attributes&lt;/h2&gt;
+&lt;p&gt;By put attributes on named declarations like classes ,  methods and data members, programmers can declare threading constraints. Those attributes affect only how compilers give you warnings. It doesn&amp;rsquo;t affect the generated code and run time behaviors at all.&lt;/p&gt;
+&lt;p&gt;As is advised in the official document, programmers are encouraged to use the macros defined in &lt;a class=&#34;link&#34; href=&#34;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;mutex.h&lt;/a&gt;  to apply these attributes.&lt;/p&gt;
+&lt;p&gt;There are many different attributes. Before using them, I recommend reading &lt;a class=&#34;link&#34; href=&#34;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;the official document&lt;/a&gt; first. Here are some constantly-used ones.&lt;/p&gt;
+&lt;h3 id=&#34;usage&#34;&gt;Usage&lt;/h3&gt;
+&lt;p&gt;To enable thread safety analysis for clang, programmers need to add a compiler option: &lt;code&gt;−Wthread−safety&lt;/code&gt;. What&amp;rsquo;s more, you also need to annotate your classes and data members with right attributes. You may also have fun with more features with &lt;code&gt;-Wthread-safety-negative&lt;/code&gt; and &lt;code&gt;-Wthread-safety-beta&lt;/code&gt; like I did in my OS kernel project &lt;a class=&#34;link&#34; href=&#34;https://github.com/SmartPolarBear/project-dionysus&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;project-dionysus&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;standard-library-support&#34;&gt;Standard Library Support&lt;/h3&gt;
+&lt;p&gt;As is stated in (D14731)[https://reviews.llvm.org/D14731], libc++ has added the support for thread annotations for &lt;code&gt;std::mutex&lt;/code&gt; and &lt;code&gt;std::lock_guard&lt;/code&gt;, so simply adding &lt;code&gt;-Wthread-safety&lt;/code&gt; may be enough. For other implementations like libstdc++, a straight-forward and brute-force way is to add a class warpper for the concerning library components.&lt;/p&gt;
+&lt;p&gt;The following usages are selected from the official document.&lt;/p&gt;
+&lt;h3 id=&#34;basic-attributes&#34;&gt;Basic Attributes&lt;/h3&gt;
+&lt;h4 id=&#34;guarded_by-and-pt_guarded_by&#34;&gt;GUARDED_BY and PT_GUARDED_BY&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;GUARDED_BY&lt;/code&gt; is an attribute on data members, which declares that the data member is protected by the given capability. Read operations on the data require shared access, while write operations require exclusive access.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;PT_GUARDED_BY&lt;/code&gt; is similar, but is intended for use on pointers and smart pointers. There is no constraint on the data member itself, but the data that it points to is protected by the given capability.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Mutex mu;
+int *p1             GUARDED_BY(mu);
+int *p2             PT_GUARDED_BY(mu);
+unique_ptr&amp;lt;int&amp;gt; p3  PT_GUARDED_BY(mu);
+
+void test() {
+  p1 = 0;             // Warning!
+
+  *p2 = 42;           // Warning!
+  p2 = new int;       // OK.
+
+  *p3 = 42;           // Warning!
+  p3.reset(new int);  // OK.
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;requires-requires_shared&#34;&gt;REQUIRES(…), REQUIRES_SHARED(…)&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;REQUIRES&lt;/code&gt; is an attribute on functions or methods, which declares that the calling thread must have exclusive access to the given capabilities. More than one capability may be specified. The capabilities must be held on entry to the function, and must still be held on exit.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;REQUIRES_SHARED&lt;/code&gt; is similar, but requires only shared access.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Mutex mu1, mu2;
+int a GUARDED_BY(mu1);
+int b GUARDED_BY(mu2);
+
+void foo() REQUIRES(mu1, mu2) {
+  a = 0;
+  b = 0;
+}
+
+void test() {
+  mu1.Lock();
+  foo();         // Warning!  Requires mu2.
+  mu1.Unlock();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;acquire-acquire_shared-release-release_shared-release_generic&#34;&gt;ACQUIRE(…), ACQUIRE_SHARED(…), RELEASE(…), RELEASE_SHARED(…), RELEASE_GENERIC(…)&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;ACQUIRE&lt;/code&gt; and &lt;code&gt;ACQUIRE_SHARED&lt;/code&gt; are attributes on functions or methods declaring that the function acquires a capability, but does not release it. The given capability must not be held on entry, and will be held on exit (exclusively for ACQUIRE, shared for ACQUIRE_SHARED).&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;RELEASE&lt;/code&gt;, &lt;code&gt;RELEASE_SHARED&lt;/code&gt;, and&lt;code&gt;RELEASE_GENERIC&lt;/code&gt;declare that the function releases the given capability. The capability must be held on entry (exclusively for RELEASE, shared for RELEASE_SHARED, exclusively or shared for RELEASE_GENERIC), and will no longer be held on exit.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Mutex mu;
+MyClass myObject GUARDED_BY(mu);
+
+void lockAndInit() ACQUIRE(mu) {
+  mu.Lock();
+  myObject.init();
+}
+
+void cleanupAndUnlock() RELEASE(mu) {
+  myObject.cleanup();
+}                          // Warning!  Need to unlock mu.
+
+void test() {
+  lockAndInit();
+  myObject.doSomething();
+  cleanupAndUnlock();
+  myObject.doSomething();  // Warning, mu is not locked.
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If no argument is passed to ACQUIRE or RELEASE, then the argument is assumed to be this, and the analysis will not check the body of the function. This pattern is intended for use by classes which hide locking details behind an abstract interface. For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;template &amp;lt;class T&amp;gt;
+class CAPABILITY(&amp;quot;mutex&amp;quot;) Container {
+private:
+  Mutex mu;
+  T* data;
+
+public:
+  // Hide mu from public interface.
+  void Lock()   ACQUIRE() { mu.Lock(); }
+  void Unlock() RELEASE() { mu.Unlock(); }
+
+  T&amp;amp; getElem(int i) { return data[i]; }
+};
+
+void test() {
+  Container&amp;lt;int&amp;gt; c;
+  c.Lock();
+  int i = c.getElem(0);
+  c.Unlock();
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;excludes&#34;&gt;EXCLUDES(…)&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;EXCLUDES&lt;/code&gt; is an attribute on functions or methods, which declares that the caller must not hold the given capabilities. This annotation is used to prevent deadlock. Many mutex implementations are not re-entrant, so deadlock can occur if the function acquires the mutex a second time.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Mutex mu;
+int a GUARDED_BY(mu);
+
+void clear() EXCLUDES(mu) {
+  mu.Lock();
+  a = 0;
+  mu.Unlock();
+}
+
+void reset() {
+  mu.Lock();
+  clear();     // Warning!  Caller cannot hold &#39;mu&#39;.
+  mu.Unlock();
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Unlike &lt;code&gt;REQUIRES&lt;/code&gt;,&lt;code&gt;EXCLUDES&lt;/code&gt; is optional. The analysis will not issue a warning if the attribute is missing, which can lead to false negatives in some cases. This issue is discussed further in Negative Capabilities.&lt;/p&gt;
+&lt;h4 id=&#34;return_capabilityc&#34;&gt;RETURN_CAPABILITY(c)&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;RETURN_CAPABILITY&lt;/code&gt; is an attribute on functions or methods, which declares that the function returns a reference to the given capability. It is used to annotate getter methods that return mutexes.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class MyClass {
+private:
+  Mutex mu;
+  int a GUARDED_BY(mu);
+
+public:
+  Mutex* getMu() RETURN_CAPABILITY(mu) { return &amp;amp;mu; }
+
+  // analysis knows that getMu() == mu
+  void clear() REQUIRES(getMu()) { a = 0; }
+};
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;capabilitystring&#34;&gt;CAPABILITY(string)&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;CAPABILITY&lt;/code&gt; is an attribute on classes, which specifies that objects of the class can be used as a capability. The string argument specifies the kind of capability in error messages, e.g. &amp;ldquo;mutex&amp;rdquo;. See the Container example given above, or the Mutex class in [&lt;a class=&#34;link&#34; href=&#34;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;mutex.h&lt;/a&gt;](&lt;a href=&#34;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader)&#34;&gt;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader)&lt;/a&gt;.&lt;/p&gt;
+&lt;h4 id=&#34;try_acquirebool--try_acquire_sharedbool-&#34;&gt;TRY_ACQUIRE(bool, …), TRY_ACQUIRE_SHARED(bool, …)&lt;/h4&gt;
+&lt;p&gt;These are attributes on a function or method that tries to acquire the given capability, and returns a boolean value indicating success or failure. The first argument must be true or false, to specify which return value indicates success, and the remaining arguments are interpreted in the same way as &lt;code&gt;ACQUIRE&lt;/code&gt;. See [&lt;a class=&#34;link&#34; href=&#34;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;mutex.h&lt;/a&gt;](&lt;a href=&#34;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader),&#34;&gt;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader),&lt;/a&gt; below, for example uses.&lt;/p&gt;
+&lt;p&gt;Because the analysis doesn’t support conditional locking, a capability is treated as acquired after the first branch on the return value of a try-acquire function.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Mutex mu;
+int a GUARDED_BY(mu);
+
+void foo() {
+  bool success = mu.TryLock();
+  a = 0;         // Warning, mu is not locked.
+  if (success) {
+    a = 0;       // Ok.
+    mu.Unlock();
+  } else {
+    a = 0;       // Warning, mu is not locked.
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;assert_capability-and-assert_shared_capability&#34;&gt;ASSERT_CAPABILITY(…) and ASSERT_SHARED_CAPABILITY(…)&lt;/h4&gt;
+&lt;p&gt;These are attributes on a function or method which asserts the calling thread already holds the given capability, for example by performing a run-time test and terminating if the capability is not held. Presence of this annotation causes the analysis to assume the capability is held after calls to the annotated function. See &lt;a class=&#34;link&#34; href=&#34;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;mutex.h&lt;/a&gt;, below, for example uses.&lt;/p&gt;
+&lt;h3 id=&#34;raii&#34;&gt;RAII&lt;/h3&gt;
+&lt;h4 id=&#34;scoped_capability&#34;&gt;SCOPED_CAPABILITY&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;SCOPED_CAPABILITY&lt;/code&gt; is an attribute on classes that implement RAII-style locking, in which a capability is acquired in the constructor, and released in the destructor. Such classes require special handling because the constructor and destructor refer to the capability via different names; see the MutexLocker class in &lt;a class=&#34;link&#34; href=&#34;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;mutex.h&lt;/a&gt;, below.&lt;/p&gt;
+&lt;p&gt;Scoped capabilities are treated as capabilities that are implicitly acquired on construction and released on destruction. They are associated with the set of (regular) capabilities named in thread safety attributes on the constructor. Acquire-type attributes on other member functions are treated as applying to that set of associated capabilities, while &lt;code&gt;RELEASE&lt;/code&gt; implies that a function releases all associated capabilities in whatever mode they’re held.&lt;/p&gt;
+&lt;h3 id=&#34;disabling-in-code&#34;&gt;Disabling in Code&lt;/h3&gt;
+&lt;h4 id=&#34;no_thread_safety_analysis&#34;&gt;NO_THREAD_SAFETY_ANALYSIS&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;NO_THREAD_SAFETY_ANALYSIS&lt;/code&gt; is an attribute on functions or methods, which turns off thread safety checking for that method. It provides an escape hatch for functions which are either (1) deliberately thread-unsafe, or (2) are thread-safe, but too complicated for the analysis to understand. Reasons for (2) will be described in the Known Limitations, below.&lt;/p&gt;
+&lt;p&gt;class Counter {
+Mutex mu;
+int a GUARDED_BY(mu);&lt;/p&gt;
+&lt;p&gt;void unsafeIncrement() NO_THREAD_SAFETY_ANALYSIS { a++; }
+};
+Unlike the other attributes, &lt;code&gt;NO_THREAD_SAFETY_ANALYSIS&lt;/code&gt; is not part of the interface of a function, and should thus be placed on the function definition (in the .cc or .cpp file) rather than on the function declaration (in the header).&lt;/p&gt;
+&lt;h2 id=&#34;epilogue&#34;&gt;Epilogue&lt;/h2&gt;
+&lt;p&gt;As a great static analysis tool, clang thread safety analysis save our time by preventing undesirable access to data members. It simplify the process of designing, coding and debugging if you don&amp;rsquo;t disable or ignore the warnings. Though when adding them to existing project, the warnings are somehow annoying.&lt;/p&gt;
+&lt;h2 id=&#34;further-reading&#34;&gt;Further Reading&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://clang.llvm.org/docs/ThreadSafetyAnalysis.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Thread Safety Analysis&lt;/a&gt;&lt;br&gt;
+Official document which is worth a carful reading before getting started.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/42958.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;C/C++ Thread Safety Analysis&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Google&amp;rsquo;s paper about thread safty analysis.&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Looking Back to 2020: PROVEHITO IN ALTUM</title>
         <link>https://xkzzzzzz.xyz/posts/looking-back-in-2020-provehito-in-altum/</link>
         <pubDate>Wed, 28 Apr 2021 00:00:00 +0800</pubDate>
