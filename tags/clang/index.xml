@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Clang on XKZZZZZZ&#39;s Lab</title>
+    <link>https://xkzzzzzz.xyz/tags/clang/</link>
+    <description>Recent content in Clang on XKZZZZZZ&#39;s Lab</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Aug 2021 22:50:42 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/tags/clang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Achieve Better Parallel Code with Clang Static Thread Analysis</title>
+      <link>https://xkzzzzzz.xyz/posts/clang-thread-analysis/</link>
+      <pubDate>Thu, 05 Aug 2021 22:50:42 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/posts/clang-thread-analysis/</guid>
+      <description>In the recent two years, thanks to AMD&amp;rsquo;s great job to push the industry forward, we can see the trend that the number of cores of CPU grow rapidly, reaching 8c16t for gaming laptops and high-performance PCs, while the growth of single core performance seems to be slower. That&amp;rsquo;s probably why parallelism plays such a important role in modern programming. With out it, it is impossible to make the most of the progress of hardware.</description>
+    </item>
+    
+  </channel>
+</rss>

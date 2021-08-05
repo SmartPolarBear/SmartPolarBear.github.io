@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Achieve thread safety without headache'><title>Achieve Better Parallel Code with Clang Static Thread Analysis</title>
+
+<link rel='canonical' href='https://xkzzzzzz.xyz/posts/clang-thread-analysis/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Achieve Better Parallel Code with Clang Static Thread Analysis'>
+<meta property='og:description' content='Achieve thread safety without headache'>
+<meta property='og:url' content='https://xkzzzzzz.xyz/posts/clang-thread-analysis/'>
+<meta property='og:site_name' content='XKZZZZZZ&#39;s Lab'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Clang' /><meta property='article:tag' content='Static Analysis' /><meta property='article:published_time' content='2021-08-05T22:50:42&#43;08:00'/><meta property='article:modified_time' content='2021-08-05T22:50:42&#43;08:00'/>
+<meta name="twitter:title" content="Achieve Better Parallel Code with Clang Static Thread Analysis">
+<meta name="twitter:description" content="Achieve thread safety without headache">
+    </head>
+    <body class="article-page keep-sidebar">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended ">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hub8e0e01de07ab5d0590684d8270298a2_124947_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">😆</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://xkzzzzzz.xyz/">XKZZZZZZ&#39;s Lab</a></h1>
+        <h2 class="site-description">E pluribus Unum.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/blog/" >
+                Blog
+            </a>
+        
+            <a href="/categories/programing-languages/" >
+                Programing Languages
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/posts/clang-thread-analysis/">Achieve Better Parallel Code with Clang Static Thread Analysis</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        Achieve thread safety without headache
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Aug 05, 2021</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <p>In the recent two years, thanks to AMD&rsquo;s great job to push the industry forward,  we can see the trend that the number of cores of CPU grow rapidly, reaching 8c16t for gaming laptops and high-performance PCs, while the growth of single core performance seems to be slower. That&rsquo;s probably why parallelism plays such a important role in modern programming. With out it, it is impossible to make the most of the progress of hardware.</p>
+<p>Nevertheless, it&rsquo;s none of a easy job. Parallel programs are known for difficulties in debugging.  And, as an effective way to synchronization, locks are widely used, but the programs are not that easy to reason about. Surely programmers should learn well about the techniques for concurrency, but, hey, when coding a real project we can hardly spare enough effort to reason about locks while solving the problem, can we? Fortunately, clang provide a mechanism called <a class="link" href="https://clang.llvm.org/docs/ThreadSafetyAnalysis.html"  target="_blank" rel="noopener"
+    >Thread Safety Analysis</a> to help us out!</p>
+<h2 id="what-is-clang-thread-safety-analysis">What is Clang Thread Safety Analysis</h2>
+<p>As said by the official document:</p>
+<blockquote>
+<p>Clang Thread Safety Analysis is a C++ language extension which warns about potential race conditions in code. The analysis is completely static (i.e. compile-time); there is no run-time overhead.</p>
+</blockquote>
+<p>In a word, by applying simple attributes on classes and functions the compiler can help us detect thread safety problems without losing any runtime performance.</p>
+<h2 id="race-condition">Race Condition</h2>
+<p>When working with parallelism, it matters a lot  how the access to data, for example, a variable, is controlled. Consider the following code: a simple method that should keep the invariant <code>x_==0</code> always:</p>
+<div class="highlight"><pre class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">foo</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+
+	<span class="kt">void</span> <span class="n">bar</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="n">x_</span> <span class="o">=</span> <span class="n">x_</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">yield</span><span class="p">();</span>
+			<span class="n">x_</span> <span class="o">=</span> <span class="n">x_</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="n">assert</span><span class="p">(</span><span class="n">x_</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+	<span class="kt">int</span> <span class="n">x_</span><span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div><p>When called with a single thread, it without doubts keeps the invariant and therefore loops forever. But when called with two threads, it crashes because the assert testing fails sometime when executing <code>bar()</code>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">foo</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+
+	<span class="kt">void</span> <span class="n">bar</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="n">x_</span> <span class="o">=</span> <span class="n">x_</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">yield</span><span class="p">();</span>
+			<span class="n">x_</span> <span class="o">=</span> <span class="n">x_</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="n">assert</span><span class="p">(</span><span class="n">x_</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+	<span class="kt">int</span> <span class="n">x_</span><span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">foo</span> <span class="n">baz</span><span class="p">;</span>
+
+	<span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t1</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="o">::</span><span class="n">bar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">baz</span><span class="p">);</span>
+	<span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t2</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="o">::</span><span class="n">bar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">baz</span><span class="p">);</span>
+
+	<span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+	<span class="n">t2</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><p>For those who is familiar with parallism, apparently, there&rsquo;s a critical section in <code>bar()</code>, which may mess things up when called by multiple threads, because two of the threads may accidentally read <code>x_</code> and do the arithmetics at the right time, when <code>x_=x_+1</code> is executed twice before one thread reaches the <code>x_=x_-1</code> and then the assertion, result in a failure. A effective way to deal with it is to protect the access to <code>x_</code> with a lock like this  :</p>
+<div class="highlight"><pre class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">foo</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+
+	<span class="kt">void</span> <span class="n">bar</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span> <span class="n">g</span><span class="p">{</span> <span class="n">lock_</span> <span class="p">};</span>
+			<span class="n">x_</span> <span class="o">=</span> <span class="n">x_</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">yield</span><span class="p">();</span>
+			<span class="n">x_</span> <span class="o">=</span> <span class="n">x_</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="n">assert</span><span class="p">(</span><span class="n">x_</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+	<span class="kt">int</span> <span class="n">x_</span><span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">lock_</span><span class="p">{};</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">foo</span> <span class="n">baz</span><span class="p">;</span>
+
+	<span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t1</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="o">::</span><span class="n">bar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">baz</span><span class="p">);</span>
+	<span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t2</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="o">::</span><span class="n">bar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">baz</span><span class="p">);</span>
+
+	<span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+	<span class="n">t2</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="p">}</span>
+
+</code></pre></div><p>It loops forever again, without a single failure.<br>
+Here, it&rsquo;s a piece of cake to figure out which variable is protected by some certain lock, but in a real project the relationship can be extremely complicated, making it hard to figure out. Moreover, we are all human. We make mistakes. It threatens the thread safety, and as well known, such kind of bug cuased by  <strong>race condition</strong> is especially hard to debug, and standard way of avoiding bugs like unit testing can not effectively deal with such a problem. Can we keep them in order by some tool? Remember how we deal with the fact that man make mistakes in type? We declare variables and specified its type explicitly. Similarly, we can also declare (optionally) how access to that data is controlled in a multi-threaded environment, given that we have a proper tool. Now here come the <a class="link" href="https://clang.llvm.org/docs/ThreadSafetyAnalysis.html"  target="_blank" rel="noopener"
+    >Thread Safety Analysis</a> to be the very tool that we need. To use it.</p>
+<h2 id="capabilities">Capabilities</h2>
+<p>Thread safety analysis ensures the calling thread cannot access the <em>resource</em> unless it has the <em>capabilities</em> associated with C++ objects. Here, <em>resource</em> refers to things like function calling, read and write.  Different methods can acquire or release the capability. As the example in it document:</p>
+<blockquote>
+<p>if <code>mu</code> is a mutex, then calling <code>mu.Lock()</code> causes the calling thread to acquire the capability to access data that is protected by <code>mu</code>. Similarly, calling <code>mu.Unlock()</code> releases that capability.</p>
+</blockquote>
+<p>Holding the capability is either exclusive or shared. An exclusive capability can be held by only one thread at a time, while a shared capability can be held by many threads at the same time. This mechanism enforces a multiple-reader, single-writer pattern. Write operations to protected data require exclusive access, while read operations require only shared access. A thread may hold a specific set of capabilities. By using thread annotations, we claim how those capabilities are held without caring about the underlaying mechanism used to acquire and release them, assuming that the underlaying implementation like the mutex is reliable enough to handle the handoff of capabilities.</p>
+<p>The compiler will approximate the real condition of capabilities held at run time as <em>capability environment</em>. It describes the set of capabilities that are statically known to be held or not held at some particular point. By analyzing these approximations, compiler give warnings about potential mistakes about capabilities.</p>
+<h2 id="attributes">Attributes</h2>
+<p>By put attributes on named declarations like classes ,  methods and data members, programmers can declare threading constraints. Those attributes affect only how compilers give you warnings. It doesn&rsquo;t affect the generated code and run time behaviors at all.</p>
+<p>As is advised in the official document, programmers are encouraged to use the macros defined in <a class="link" href="https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader"  target="_blank" rel="noopener"
+    >mutex.h</a>  to apply these attributes.</p>
+<p>There are many different attributes. Before using them, I recommend reading <a class="link" href="https://clang.llvm.org/docs/ThreadSafetyAnalysis.html"  target="_blank" rel="noopener"
+    >the official document</a> first. Here are some constantly-used ones.</p>
+<h3 id="usage">Usage</h3>
+<p>To enable thread safety analysis for clang, programmers need to add a compiler option: <code>−Wthread−safety</code>. What&rsquo;s more, you also need to annotate your classes and data members with right attributes. You may also have fun with more features with <code>-Wthread-safety-negative</code> and <code>-Wthread-safety-beta</code> like I did in my OS kernel project <a class="link" href="https://github.com/SmartPolarBear/project-dionysus"  target="_blank" rel="noopener"
+    >project-dionysus</a>.</p>
+<h3 id="standard-library-support">Standard Library Support</h3>
+<p>As is stated in (D14731)[https://reviews.llvm.org/D14731], libc++ has added the support for thread annotations for <code>std::mutex</code> and <code>std::lock_guard</code>, so simply adding <code>-Wthread-safety</code> may be enough. For other implementations like libstdc++, a straight-forward and brute-force way is to add a class warpper for the concerning library components.</p>
+<p>The following usages are selected from the official document.</p>
+<h3 id="basic-attributes">Basic Attributes</h3>
+<h4 id="guarded_by-and-pt_guarded_by">GUARDED_BY and PT_GUARDED_BY</h4>
+<p><code>GUARDED_BY</code> is an attribute on data members, which declares that the data member is protected by the given capability. Read operations on the data require shared access, while write operations require exclusive access.</p>
+<p><code>PT_GUARDED_BY</code> is similar, but is intended for use on pointers and smart pointers. There is no constraint on the data member itself, but the data that it points to is protected by the given capability.</p>
+<pre><code>Mutex mu;
+int *p1             GUARDED_BY(mu);
+int *p2             PT_GUARDED_BY(mu);
+unique_ptr&lt;int&gt; p3  PT_GUARDED_BY(mu);
+
+void test() {
+  p1 = 0;             // Warning!
+
+  *p2 = 42;           // Warning!
+  p2 = new int;       // OK.
+
+  *p3 = 42;           // Warning!
+  p3.reset(new int);  // OK.
+}
+</code></pre><h4 id="requires-requires_shared">REQUIRES(…), REQUIRES_SHARED(…)</h4>
+<p><code>REQUIRES</code> is an attribute on functions or methods, which declares that the calling thread must have exclusive access to the given capabilities. More than one capability may be specified. The capabilities must be held on entry to the function, and must still be held on exit.</p>
+<p><code>REQUIRES_SHARED</code> is similar, but requires only shared access.</p>
+<pre><code>Mutex mu1, mu2;
+int a GUARDED_BY(mu1);
+int b GUARDED_BY(mu2);
+
+void foo() REQUIRES(mu1, mu2) {
+  a = 0;
+  b = 0;
+}
+
+void test() {
+  mu1.Lock();
+  foo();         // Warning!  Requires mu2.
+  mu1.Unlock();
+}
+</code></pre><h4 id="acquire-acquire_shared-release-release_shared-release_generic">ACQUIRE(…), ACQUIRE_SHARED(…), RELEASE(…), RELEASE_SHARED(…), RELEASE_GENERIC(…)</h4>
+<p><code>ACQUIRE</code> and <code>ACQUIRE_SHARED</code> are attributes on functions or methods declaring that the function acquires a capability, but does not release it. The given capability must not be held on entry, and will be held on exit (exclusively for ACQUIRE, shared for ACQUIRE_SHARED).</p>
+<p><code>RELEASE</code>, <code>RELEASE_SHARED</code>, and<code>RELEASE_GENERIC</code>declare that the function releases the given capability. The capability must be held on entry (exclusively for RELEASE, shared for RELEASE_SHARED, exclusively or shared for RELEASE_GENERIC), and will no longer be held on exit.</p>
+<pre><code>Mutex mu;
+MyClass myObject GUARDED_BY(mu);
+
+void lockAndInit() ACQUIRE(mu) {
+  mu.Lock();
+  myObject.init();
+}
+
+void cleanupAndUnlock() RELEASE(mu) {
+  myObject.cleanup();
+}                          // Warning!  Need to unlock mu.
+
+void test() {
+  lockAndInit();
+  myObject.doSomething();
+  cleanupAndUnlock();
+  myObject.doSomething();  // Warning, mu is not locked.
+}
+</code></pre><p>If no argument is passed to ACQUIRE or RELEASE, then the argument is assumed to be this, and the analysis will not check the body of the function. This pattern is intended for use by classes which hide locking details behind an abstract interface. For example:</p>
+<pre><code>template &lt;class T&gt;
+class CAPABILITY(&quot;mutex&quot;) Container {
+private:
+  Mutex mu;
+  T* data;
+
+public:
+  // Hide mu from public interface.
+  void Lock()   ACQUIRE() { mu.Lock(); }
+  void Unlock() RELEASE() { mu.Unlock(); }
+
+  T&amp; getElem(int i) { return data[i]; }
+};
+
+void test() {
+  Container&lt;int&gt; c;
+  c.Lock();
+  int i = c.getElem(0);
+  c.Unlock();
+}
+
+</code></pre><h4 id="excludes">EXCLUDES(…)</h4>
+<p><code>EXCLUDES</code> is an attribute on functions or methods, which declares that the caller must not hold the given capabilities. This annotation is used to prevent deadlock. Many mutex implementations are not re-entrant, so deadlock can occur if the function acquires the mutex a second time.</p>
+<pre><code>Mutex mu;
+int a GUARDED_BY(mu);
+
+void clear() EXCLUDES(mu) {
+  mu.Lock();
+  a = 0;
+  mu.Unlock();
+}
+
+void reset() {
+  mu.Lock();
+  clear();     // Warning!  Caller cannot hold 'mu'.
+  mu.Unlock();
+}
+
+</code></pre><p>Unlike <code>REQUIRES</code>,<code>EXCLUDES</code> is optional. The analysis will not issue a warning if the attribute is missing, which can lead to false negatives in some cases. This issue is discussed further in Negative Capabilities.</p>
+<h4 id="return_capabilityc">RETURN_CAPABILITY(c)</h4>
+<p><code>RETURN_CAPABILITY</code> is an attribute on functions or methods, which declares that the function returns a reference to the given capability. It is used to annotate getter methods that return mutexes.</p>
+<pre><code>class MyClass {
+private:
+  Mutex mu;
+  int a GUARDED_BY(mu);
+
+public:
+  Mutex* getMu() RETURN_CAPABILITY(mu) { return &amp;mu; }
+
+  // analysis knows that getMu() == mu
+  void clear() REQUIRES(getMu()) { a = 0; }
+};
+
+</code></pre><h4 id="capabilitystring">CAPABILITY(string)</h4>
+<p><code>CAPABILITY</code> is an attribute on classes, which specifies that objects of the class can be used as a capability. The string argument specifies the kind of capability in error messages, e.g. &ldquo;mutex&rdquo;. See the Container example given above, or the Mutex class in [<a class="link" href="https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader"  target="_blank" rel="noopener"
+    >mutex.h</a>](<a href="https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader)">https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader)</a>.</p>
+<h4 id="try_acquirebool--try_acquire_sharedbool-">TRY_ACQUIRE(bool, …), TRY_ACQUIRE_SHARED(bool, …)</h4>
+<p>These are attributes on a function or method that tries to acquire the given capability, and returns a boolean value indicating success or failure. The first argument must be true or false, to specify which return value indicates success, and the remaining arguments are interpreted in the same way as <code>ACQUIRE</code>. See [<a class="link" href="https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader"  target="_blank" rel="noopener"
+    >mutex.h</a>](<a href="https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader),">https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader),</a> below, for example uses.</p>
+<p>Because the analysis doesn’t support conditional locking, a capability is treated as acquired after the first branch on the return value of a try-acquire function.</p>
+<pre><code>Mutex mu;
+int a GUARDED_BY(mu);
+
+void foo() {
+  bool success = mu.TryLock();
+  a = 0;         // Warning, mu is not locked.
+  if (success) {
+    a = 0;       // Ok.
+    mu.Unlock();
+  } else {
+    a = 0;       // Warning, mu is not locked.
+  }
+}
+</code></pre><h4 id="assert_capability-and-assert_shared_capability">ASSERT_CAPABILITY(…) and ASSERT_SHARED_CAPABILITY(…)</h4>
+<p>These are attributes on a function or method which asserts the calling thread already holds the given capability, for example by performing a run-time test and terminating if the capability is not held. Presence of this annotation causes the analysis to assume the capability is held after calls to the annotated function. See <a class="link" href="https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader"  target="_blank" rel="noopener"
+    >mutex.h</a>, below, for example uses.</p>
+<h3 id="raii">RAII</h3>
+<h4 id="scoped_capability">SCOPED_CAPABILITY</h4>
+<p><code>SCOPED_CAPABILITY</code> is an attribute on classes that implement RAII-style locking, in which a capability is acquired in the constructor, and released in the destructor. Such classes require special handling because the constructor and destructor refer to the capability via different names; see the MutexLocker class in <a class="link" href="https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutexheader"  target="_blank" rel="noopener"
+    >mutex.h</a>, below.</p>
+<p>Scoped capabilities are treated as capabilities that are implicitly acquired on construction and released on destruction. They are associated with the set of (regular) capabilities named in thread safety attributes on the constructor. Acquire-type attributes on other member functions are treated as applying to that set of associated capabilities, while <code>RELEASE</code> implies that a function releases all associated capabilities in whatever mode they’re held.</p>
+<h3 id="disabling-in-code">Disabling in Code</h3>
+<h4 id="no_thread_safety_analysis">NO_THREAD_SAFETY_ANALYSIS</h4>
+<p><code>NO_THREAD_SAFETY_ANALYSIS</code> is an attribute on functions or methods, which turns off thread safety checking for that method. It provides an escape hatch for functions which are either (1) deliberately thread-unsafe, or (2) are thread-safe, but too complicated for the analysis to understand. Reasons for (2) will be described in the Known Limitations, below.</p>
+<p>class Counter {
+Mutex mu;
+int a GUARDED_BY(mu);</p>
+<p>void unsafeIncrement() NO_THREAD_SAFETY_ANALYSIS { a++; }
+};
+Unlike the other attributes, <code>NO_THREAD_SAFETY_ANALYSIS</code> is not part of the interface of a function, and should thus be placed on the function definition (in the .cc or .cpp file) rather than on the function declaration (in the header).</p>
+<h2 id="epilogue">Epilogue</h2>
+<p>As a great static analysis tool, clang thread safety analysis save our time by preventing undesirable access to data members. It simplify the process of designing, coding and debugging if you don&rsquo;t disable or ignore the warnings. Though when adding them to existing project, the warnings are somehow annoying.</p>
+<h2 id="further-reading">Further Reading</h2>
+<ol>
+<li>
+<p><a class="link" href="https://clang.llvm.org/docs/ThreadSafetyAnalysis.html"  target="_blank" rel="noopener"
+    >Thread Safety Analysis</a><br>
+Official document which is worth a carful reading before getting started.</p>
+</li>
+<li>
+<p><a class="link" href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/42958.pdf"  target="_blank" rel="noopener"
+    >C/C++ Thread Safety Analysis</a></p>
+</li>
+</ol>
+<p>Google&rsquo;s paper about thread safty analysis.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/clang/">Clang</a>
+        
+            <a href="/tags/static-analysis/">Static Analysis</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+     
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="SmartPolarBear/SmartPolarBear.github.io"
+        issue-term="pathname"
+        theme="preferred-color-scheme" 
+        
+        label="comment"
+        
+        crossorigin="anonymous" 
+        async>
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 XKZZZZZZ&#39;s Lab
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.0.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+
+            </main>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"
+    integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin="anonymous"></script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
