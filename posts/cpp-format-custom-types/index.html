@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Support the C&#43;&#43;20 format library for your custom types'><title>C&#43;&#43;20 Format Library for Custom Types</title>
+
+<link rel='canonical' href='https://xkzzzzzz.xyz/posts/cpp-format-custom-types/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='C&#43;&#43;20 Format Library for Custom Types'>
+<meta property='og:description' content='Support the C&#43;&#43;20 format library for your custom types'>
+<meta property='og:url' content='https://xkzzzzzz.xyz/posts/cpp-format-custom-types/'>
+<meta property='og:site_name' content='XKZZZZZZ&#39;s Lab'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='C&#43;&#43;20' /><meta property='article:tag' content='Ranges' /><meta property='article:tag' content='Coroutines' /><meta property='article:tag' content='Language' /><meta property='article:published_time' content='2022-02-08T21:06:32&#43;08:00'/><meta property='article:modified_time' content='2022-02-08T21:06:32&#43;08:00'/>
+<meta name="twitter:title" content="C&#43;&#43;20 Format Library for Custom Types">
+<meta name="twitter:description" content="Support the C&#43;&#43;20 format library for your custom types">
+    </head>
+    <body class="article-page keep-sidebar">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended ">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hub8e0e01de07ab5d0590684d8270298a2_124947_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">😆</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://xkzzzzzz.xyz/">XKZZZZZZ&#39;s Lab</a></h1>
+        <h2 class="site-description">E pluribus Unum.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/blog/" >
+                Blog
+            </a>
+        
+            <a href="/categories/programing-languages/" >
+                Programing Languages
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/posts/cpp-format-custom-types/">C&#43;&#43;20 Format Library for Custom Types</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        Support the C&#43;&#43;20 format library for your custom types
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Feb 08, 2022</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <p>For a long time before C++20&rsquo;s born, first-party support for string formatting is indeed a mess for C++.  <code>printf</code> family inherited from C is known for security concerns and a lack of support for custom format strings and custom types, and the <code>&lt;iostream&gt;</code> library is criticized for ugly grammars and performance issues.  C++20 brings us <code>&lt;format&gt;</code> a better way to address string formatting.</p>
+<h2 id="format-basics"><code>&lt;format&gt;</code> Basics</h2>
+<p><code>format</code> library is based on the popular placeholder-based syntax for string formatting used by various languages like Python and C#. It provide a type-safe way with great extensibility.</p>
+<p>Function <code>std::format</code> is an important part of the library. Here is a simple example:</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">&#34;{1} {2} {0}&#34;</span><span class="p">,</span> <span class="s">&#34;world&#34;</span><span class="p">,</span> <span class="s">&#34;hello&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</code></pre></div><p>Which gives the ouput</p>
+<blockquote>
+<p>hello 1 world</p>
+</blockquote>
+<p>Also, the function <code>std::format_to</code> used with iterators can put formatted strings into containers and streams. For example,</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span> <span class="n">file</span><span class="p">{</span> <span class="s">&#34;format.txt&#34;</span> <span class="p">};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">format_to</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostream_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s">&#34;hello, {}!&#34;</span><span class="p">,</span> <span class="s">&#34;world&#34;</span><span class="p">);</span>
+</code></pre></div><p>will gives a file with content &ldquo;hello, world!&rdquo;.<br>
+Here, we work with simple types like integers and strings. The post will discuss how to cope with custom types which is commonly seen in any C++ program.</p>
+<h2 id="formatters">Formatters</h2>
+<p>In fact, to support <code>std::format</code>, the traditional way for <code>&lt;iostream&gt;</code> library of defining <code>operator&lt;&lt;</code> is still viable, but it is less configurable and also introduce the same performance overhead of the <code>&lt;iostream&gt;</code> library. The newer and better way is to write a custom formatter that specialize the <code>std::formatter</code> <a class="link" href="https://en.cppreference.com/w/cpp/utility/format/formatter"  target="_blank" rel="noopener"
+    >template</a>. Formatters have been provided for built-in types and some library components,  as listed in the document in <strong>Standard specializations for basic types and string types</strong>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">template</span><span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="kt">char</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="kt">wchar_t</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="kt">wchar_t</span><span class="p">,</span> <span class="kt">wchar_t</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="n">CharT</span><span class="o">*</span><span class="p">,</span> <span class="n">CharT</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">CharT</span><span class="o">*</span><span class="p">,</span> <span class="n">CharT</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">size_t</span> <span class="n">N</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">CharT</span><span class="p">[</span><span class="n">N</span><span class="p">],</span> <span class="n">CharT</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">Traits</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Alloc</span><span class="o">&gt;</span>
+  <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">basic_string</span><span class="o">&lt;</span><span class="n">CharT</span><span class="p">,</span> <span class="n">Traits</span><span class="p">,</span> <span class="n">Alloc</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">CharT</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">Traits</span><span class="o">&gt;</span>
+  <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">basic_string_view</span><span class="o">&lt;</span><span class="n">CharT</span><span class="p">,</span> <span class="n">Traits</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">CharT</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="n">ArithmeticT</span><span class="p">,</span> <span class="n">CharT</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">nullptr_t</span><span class="p">,</span> <span class="n">CharT</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">*</span><span class="p">,</span> <span class="n">CharT</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="nc">formatter</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span><span class="p">,</span> <span class="n">CharT</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div><p>To support one for our custom type, say the struct <code>product</code>,</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">struct</span> <span class="nc">product</span>
+<span class="p">{</span>
+	<span class="n">string</span> <span class="n">brand</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+	<span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div><p>two functions, <code>parse</code> and <code>format</code> should be provided to support parsing the format specifications in the placeholder and to format the given value, repectively.<br>
+Typically, <code>format</code> should be always provided, but <code>parse</code> can be simply inherited from <code>std::formatter</code> if no special format specifications is required for the custom type. Here, we support 2 format specifications, <code>d</code>,<code>b</code>, to control the detailed or breif output, respectively, for our <code>product</code> struct. So we implement the formatter as follows:</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">template</span><span class="o">&lt;&gt;</span>
+<span class="k">struct</span> <span class="nc">std</span><span class="o">::</span><span class="n">formatter</span><span class="o">&lt;</span><span class="n">product</span><span class="o">&gt;</span>
+<span class="p">{</span>
+	<span class="kt">bool</span> <span class="n">detailed</span><span class="p">{</span> <span class="nb">false</span> <span class="p">};</span>
+
+	<span class="k">constexpr</span> <span class="k">auto</span> <span class="nf">parse</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">format_parse_context</span><span class="o">&amp;</span> <span class="n">context</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">end</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="o">!=</span> <span class="n">end</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">*</span><span class="n">it</span> <span class="o">==</span> <span class="sc">&#39;b&#39;</span> <span class="o">||</span> <span class="o">*</span><span class="n">it</span> <span class="o">==</span> <span class="sc">&#39;d&#39;</span><span class="p">))</span> <span class="n">detailed</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="o">++</span><span class="p">)</span> <span class="o">==</span> <span class="sc">&#39;d&#39;</span><span class="p">;</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="o">!=</span> <span class="n">end</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="n">it</span> <span class="o">!=</span> <span class="sc">&#39;}&#39;</span><span class="p">)</span> <span class="k">throw</span> <span class="n">format_error</span><span class="p">(</span><span class="s">&#34;Invalid format&#34;</span><span class="p">);</span>
+
+		<span class="k">return</span> <span class="n">it</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">FormatContext</span><span class="o">&gt;</span>
+	<span class="k">auto</span> <span class="n">format</span><span class="p">(</span>
+		<span class="k">const</span> <span class="n">product</span><span class="o">&amp;</span> <span class="n">p</span><span class="p">,</span>
+		<span class="n">FormatContext</span><span class="o">&amp;</span> <span class="n">context</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">detailed</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="nf">format_to</span><span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">out</span><span class="p">(),</span> <span class="s">&#34;product(</span><span class="p">{},{},{})</span><span class="s">&#34;, p.brand, p.name, p.value);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="nf">format_to</span><span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">out</span><span class="p">(),</span> <span class="s">&#34;product </span><span class="p">{}</span><span class="s">&#34;, p.name);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div><p><code>parse</code> is resposible to parse the format specification and store the settings in data members for <code>format</code> method to use. It should return the iterator past the end of the parsed range according to the requirement. <code>format</code> should put the result in <code>context.out()</code>. So the <code>std::format_to</code> function mentioned above is used.</p>
+<p>With the custom formatter, we can <code>format</code> the <code>product</code> struct freely. The following code</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">product</span> <span class="n">p</span><span class="p">{</span> <span class="s">&#34;kanon&#34;</span><span class="p">,</span><span class="mi">5000</span><span class="p">,</span><span class="s">&#34;d550&#34;</span> <span class="p">};</span>
+
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">&#34;{:d}&#34;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">&#34;{:b}&#34;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div><p>Will print</p>
+<blockquote>
+<p>product(kanon,d550,5000)
+product d550</p>
+</blockquote>
+<p>and</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">&#34;{:c}&#34;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div><p>Will raise an exception because <code>c</code> is not a format specification that we support.</p>
+<p>In my work, I use <code>&lt;format&gt;</code> with a library <a class="link" href="https://github.com/Neargye/magic_enum"  target="_blank" rel="noopener"
+    >magic_enum</a> to support a elegant way for logging enums, which provides a convenient way to debug.    For example, in the compiler project <a class="link" href="" >clox</a>, I implement a custom formatter for <code>op_code</code> in <a class="link" href="https://github.com/SmartPolarBear/clox/blob/master/interpreter/include/interpreter/vm/opcode.h"  target="_blank" rel="noopener"
+    >opcode.h</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-c++" data-lang="c++"><span class="cp">#include</span> <span class="cpf">&lt;magic_enum.hpp&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">namespace</span> <span class="n">magic_enum</span>
+<span class="p">{</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span>
+<span class="k">struct</span> <span class="nc">customize</span><span class="o">::</span><span class="n">enum_range</span><span class="o">&lt;</span><span class="n">clox</span><span class="o">::</span><span class="n">interpreting</span><span class="o">::</span><span class="n">vm</span><span class="o">::</span><span class="n">op_code</span><span class="o">&gt;</span>
+<span class="p">{</span>
+	<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">min</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">clox</span><span class="o">::</span><span class="n">interpreting</span><span class="o">::</span><span class="n">vm</span><span class="o">::</span><span class="n">op_code</span><span class="o">::</span><span class="n">OPCODE_ENUM_MIN</span><span class="p">;</span>
+	<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">clox</span><span class="o">::</span><span class="n">interpreting</span><span class="o">::</span><span class="n">vm</span><span class="o">::</span><span class="n">op_code</span><span class="o">::</span><span class="n">OPCODE_ENUM_MAX</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="p">}</span>
+
+
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;format&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">namespace</span> <span class="n">std</span>
+<span class="p">{</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span>
+<span class="k">struct</span> <span class="nc">std</span><span class="o">::</span><span class="n">formatter</span><span class="o">&lt;</span><span class="n">clox</span><span class="o">::</span><span class="n">interpreting</span><span class="o">::</span><span class="n">vm</span><span class="o">::</span><span class="n">op_code</span><span class="o">&gt;</span> <span class="o">:</span> <span class="n">std</span><span class="o">::</span><span class="n">formatter</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span>
+<span class="p">{</span>
+	<span class="k">auto</span> <span class="nf">format</span><span class="p">(</span><span class="n">clox</span><span class="o">::</span><span class="n">interpreting</span><span class="o">::</span><span class="n">vm</span><span class="o">::</span><span class="n">op_code</span> <span class="n">op</span><span class="p">,</span> <span class="n">format_context</span><span class="o">&amp;</span> <span class="n">ctx</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">op_str</span><span class="p">{</span> <span class="n">magic_enum</span><span class="o">::</span><span class="n">enum_name</span><span class="p">(</span><span class="n">op</span><span class="p">)</span> <span class="p">};</span>
+
+		<span class="k">return</span> <span class="n">formatter</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;::</span><span class="n">format</span><span class="p">(</span>
+				<span class="n">op_str</span><span class="p">,</span> <span class="n">ctx</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+
+<span class="k">template</span><span class="o">&lt;&gt;</span>
+<span class="k">struct</span> <span class="nc">std</span><span class="o">::</span><span class="n">formatter</span><span class="o">&lt;</span><span class="n">clox</span><span class="o">::</span><span class="n">interpreting</span><span class="o">::</span><span class="n">vm</span><span class="o">::</span><span class="n">secondary_op_code</span><span class="o">&gt;</span> <span class="o">:</span> <span class="n">std</span><span class="o">::</span><span class="n">formatter</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span>
+<span class="p">{</span>
+	<span class="k">auto</span> <span class="nf">format</span><span class="p">(</span><span class="n">clox</span><span class="o">::</span><span class="n">interpreting</span><span class="o">::</span><span class="n">vm</span><span class="o">::</span><span class="n">secondary_op_code</span> <span class="n">sop</span><span class="p">,</span> <span class="n">format_context</span><span class="o">&amp;</span> <span class="n">ctx</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="n">formatter</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;::</span><span class="n">format</span><span class="p">(</span>
+				<span class="n">to_string</span><span class="p">(</span><span class="n">clox</span><span class="o">::</span><span class="n">helper</span><span class="o">::</span><span class="n">enum_cast</span><span class="p">(</span><span class="n">sop</span><span class="p">)),</span> <span class="n">ctx</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="p">}</span>
+
+</code></pre></div><p>So I can print the name for enum values only by its value. It really helps when dumping the bytecodes.</p>
+<h2 id="format-in-the-future"><code>&lt;format&gt;</code> in the Future</h2>
+<p>As is said in Microsoft&rsquo;s blog <a class="link" href="https://devblogs.microsoft.com/cppblog/format-in-visual-studio-2019-version-16-10/"  target="_blank" rel="noopener"
+    ><!-- raw HTML omitted --> in Visual Studio 2019 version 16.10</a>, C++23 will likely add compile time format checking to format literals, which will make the new library even faster and avoid runtime exceptions. Also, <code>std::print</code> may come to the library to directly print the format result.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/c&#43;&#43;20/">C&#43;&#43;20</a>
+        
+            <a href="/tags/ranges/">Ranges</a>
+        
+            <a href="/tags/coroutines/">Coroutines</a>
+        
+            <a href="/tags/language/">Language</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+     
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="SmartPolarBear/SmartPolarBear.github.io"
+        issue-term="pathname"
+        theme="preferred-color-scheme" 
+        
+        label="comment"
+        
+        crossorigin="anonymous" 
+        async>
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 XKZZZZZZ&#39;s Lab
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.0.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+
+            </main>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"
+    integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin="anonymous"></script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

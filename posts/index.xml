@@ -6,7 +6,17 @@
     <description>Recent content in Posts on XKZZZZZZ&#39;s Lab</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Aug 2021 22:50:42 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Feb 2022 21:06:32 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C&#43;&#43;20 Format Library for Custom Types</title>
+      <link>https://xkzzzzzz.xyz/posts/cpp-format-custom-types/</link>
+      <pubDate>Tue, 08 Feb 2022 21:06:32 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/posts/cpp-format-custom-types/</guid>
+      <description>For a long time before C++20&amp;rsquo;s born, first-party support for string formatting is indeed a mess for C++. printf family inherited from C is known for security concerns and a lack of support for custom format strings and custom types, and the &amp;lt;iostream&amp;gt; library is criticized for ugly grammars and performance issues. C++20 brings us &amp;lt;format&amp;gt; a better way to address string formatting.
+&amp;lt;format&amp;gt; Basics format library is based on the popular placeholder-based syntax for string formatting used by various languages like Python and C#.</description>
+    </item>
+    
     <item>
       <title>Achieve Better Parallel Code with Clang Static Thread Analysis</title>
       <link>https://xkzzzzzz.xyz/posts/clang-thread-analysis/</link>

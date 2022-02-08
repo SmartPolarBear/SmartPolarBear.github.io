@@ -6,7 +6,43 @@
     <description>Recent content in Tags on XKZZZZZZ&#39;s Lab</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Aug 2021 22:50:42 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Feb 2022 21:06:32 +0800</lastBuildDate><atom:link href="https://xkzzzzzz.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C&#43;&#43;20</title>
+      <link>https://xkzzzzzz.xyz/tags/c&#43;&#43;20/</link>
+      <pubDate>Tue, 08 Feb 2022 21:06:32 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/tags/c&#43;&#43;20/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Coroutines</title>
+      <link>https://xkzzzzzz.xyz/tags/coroutines/</link>
+      <pubDate>Tue, 08 Feb 2022 21:06:32 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/tags/coroutines/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Language</title>
+      <link>https://xkzzzzzz.xyz/tags/language/</link>
+      <pubDate>Tue, 08 Feb 2022 21:06:32 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/tags/language/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ranges</title>
+      <link>https://xkzzzzzz.xyz/tags/ranges/</link>
+      <pubDate>Tue, 08 Feb 2022 21:06:32 +0800</pubDate>
+      
+      <guid>https://xkzzzzzz.xyz/tags/ranges/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Clang</title>
       <link>https://xkzzzzzz.xyz/tags/clang/</link>
@@ -40,42 +76,6 @@
       <pubDate>Wed, 28 Apr 2021 00:00:00 +0800</pubDate>
       
       <guid>https://xkzzzzzz.xyz/tags/summary/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>C&#43;&#43;20</title>
-      <link>https://xkzzzzzz.xyz/tags/c&#43;&#43;20/</link>
-      <pubDate>Sun, 07 Feb 2021 23:40:03 +0800</pubDate>
-      
-      <guid>https://xkzzzzzz.xyz/tags/c&#43;&#43;20/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Coroutines</title>
-      <link>https://xkzzzzzz.xyz/tags/coroutines/</link>
-      <pubDate>Sun, 07 Feb 2021 23:40:03 +0800</pubDate>
-      
-      <guid>https://xkzzzzzz.xyz/tags/coroutines/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Language</title>
-      <link>https://xkzzzzzz.xyz/tags/language/</link>
-      <pubDate>Sun, 07 Feb 2021 23:40:03 +0800</pubDate>
-      
-      <guid>https://xkzzzzzz.xyz/tags/language/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ranges</title>
-      <link>https://xkzzzzzz.xyz/tags/ranges/</link>
-      <pubDate>Sun, 07 Feb 2021 23:40:03 +0800</pubDate>
-      
-      <guid>https://xkzzzzzz.xyz/tags/ranges/</guid>
       <description></description>
     </item>
     
